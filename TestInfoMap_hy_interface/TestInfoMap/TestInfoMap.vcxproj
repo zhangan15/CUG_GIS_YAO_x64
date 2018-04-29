@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4425DABB-3821-4177-A42C-B7504DDB3057}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWChar_tAsBuiltInType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Console</SubSystem>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateDebugInformation>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">qtmain.lib;Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>C:\Qt\5.10.1\msvc2015_64\include;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\Qt\5.10.1\msvc2015_64\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="demoMain.cpp" />
+    <ClCompile Include="Infomap.cpp" />
+    <ClCompile Include="infomap\FlowNetwork.cpp" />
+    <ClCompile Include="infomap\InfomapBase.cpp" />
+    <ClCompile Include="infomap\InfomapContext.cpp" />
+    <ClCompile Include="infomap\MemFlowNetwork.cpp" />
+    <ClCompile Include="infomap\MemNetwork.cpp" />
+    <ClCompile Include="infomap\MemoryNetworkAdapter.cpp" />
+    <ClCompile Include="infomap\MultiplexNetwork.cpp" />
+    <ClCompile Include="infomap\Network.cpp" />
+    <ClCompile Include="infomap\NetworkAdapter.cpp" />
+    <ClCompile Include="infomap\Node.cpp" />
+    <ClCompile Include="infomap\TreeData.cpp" />
+    <ClCompile Include="io\BipartiteClusterReader.cpp" />
+    <ClCompile Include="io\ClusterReader.cpp" />
+    <ClCompile Include="io\getopt.c" />
+    <ClCompile Include="io\HierarchicalNetwork.cpp" />
+    <ClCompile Include="io\ProgramInterface.cpp" />
+    <ClCompile Include="io\TreeDataWriter.cpp" />
+    <ClCompile Include="io\version.cpp" />
+    <ClCompile Include="utils\FileURI.cpp" />
+    <ClCompile Include="utils\Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Infomap.h" />
+    <ClInclude Include="infomap\Edge.h" />
+    <ClInclude Include="infomap\flowData.h" />
+    <ClInclude Include="infomap\flowData_traits.h" />
+    <ClInclude Include="infomap\FlowNetwork.h" />
+    <ClInclude Include="infomap\InfomapBase.h" />
+    <ClInclude Include="infomap\InfomapContext.h" />
+    <ClInclude Include="infomap\InfomapGreedy.h" />
+    <ClInclude Include="infomap\InfomapGreedyCommon.h" />
+    <ClInclude Include="infomap\InfomapGreedySpecialized.h" />
+    <ClInclude Include="infomap\InfomapGreedyTypeSpecialized.h" />
+    <ClInclude Include="infomap\MemFlowNetwork.h" />
+    <ClInclude Include="infomap\MemNetwork.h" />
+    <ClInclude Include="infomap\MemoryNetworkAdapter.h" />
+    <ClInclude Include="infomap\MultiplexNetwork.h" />
+    <ClInclude Include="infomap\Network.h" />
+    <ClInclude Include="infomap\NetworkAdapter.h" />
+    <ClInclude Include="infomap\Node.h" />
+    <ClInclude Include="infomap\NodeFactory.h" />
+    <ClInclude Include="infomap\TreeData.h" />
+    <ClInclude Include="infomap\treeIterators.h" />
+    <ClInclude Include="io\BipartiteClusterReader.h" />
+    <ClInclude Include="io\ClusterReader.h" />
+    <ClInclude Include="io\Config.h" />
+    <ClInclude Include="io\convert.h" />
+    <ClInclude Include="io\getopt.h" />
+    <ClInclude Include="io\HierarchicalNetwork.h" />
+    <ClInclude Include="io\ProgramInterface.h" />
+    <ClInclude Include="io\SafeFile.h" />
+    <ClInclude Include="io\tailor.h" />
+    <ClInclude Include="io\TreeDataWriter.h" />
+    <ClInclude Include="io\version.h" />
+    <ClInclude Include="utils\Date.h" />
+    <ClInclude Include="utils\FileURI.h" />
+    <ClInclude Include="utils\gap_iterator.h" />
+    <ClInclude Include="utils\infomath.h" />
+    <ClInclude Include="utils\Logger.h" />
+    <ClInclude Include="utils\MersenneTwister.h" />
+    <ClInclude Include="utils\Stopwatch.h" />
+    <ClInclude Include="utils\types.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
