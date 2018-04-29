@@ -310,15 +310,10 @@ __pycache__/
 *.dat
 *.dnn
 *.ovr
-*.pdf
-*.docx
 *.pptx
-*.xlsx
 *.dat_
 *.rar
 *.filters
-*.bat
-*.txt
 *.clu
 *.tree
 *.dbf
