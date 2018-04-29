@@ -306,7 +306,6 @@ __pycache__/
 *.jpg
 *.shp
 *.dbx
-*.xml
 *.shx
 *.dat
 *.dnn
@@ -324,6 +323,8 @@ __pycache__/
 *.tree
 *.dbf
 *.nvuser
+*.ppm
+*.exe
 
 thirdlib/
 alglib/
