@@ -174,10 +174,10 @@ uint16_t SementicSegImage(anet_type& net, matrix<rgb_pixel> input_image, matrix<
 int main(int argc, char** argv) try
 {
 	anet_type net;
-	deserialize("./semantic_segmentation_own_net.dnn") >> net;
+	deserialize("./semantic_segmentation_ADE20K_batch2_Window5_net.dnn") >> net;
 	cout << "load net success." << endl;
 
-	QString inputFileName = "./data_jpg/work.jpg";
+	QString inputFileName = "./data_jpg/113.223719_23.108423_0.png";
 
 	//load image
 	matrix<rgb_pixel> input_image;

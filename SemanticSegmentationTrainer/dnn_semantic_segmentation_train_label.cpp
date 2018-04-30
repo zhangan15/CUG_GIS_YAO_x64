@@ -429,7 +429,7 @@ int main(int argc, char** argv) try
 
     net.clean();
     cout << "saving network" << endl;
-    serialize("./semantic_segmentation_own_net.dnn") << net;
+    serialize("./semantic_segmentation_ADE20K_batch2_Window5_net.dnn") << net;
 
 	cout << "Step 4: saving net success." << endl;
 
