@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <QtCore>
+#include <QtGui>
 using namespace std;
 
 
@@ -38,6 +40,56 @@ static color_image_t *Random_produce_ppm(int width, int height) {
   }
   
   return im;
+}
+
+//load image
+bool loadImage(char* sfilename, color_image_t*& im)
+{
+	QImage img;
+	if (!img.load(QString(sfilename)))
+	{
+		cout << "load file error: " << sfilename << endl;
+		return false;
+	}
+
+	
+
+	//img = img.convertToFormat(QImage::Format_RGB888);
+
+	
+	int nheight = img.height();
+	int nwidth = img.width();
+	int nbands = 3;
+
+	if (im != NULL)
+		color_image_delete(im);
+	im = color_image_new(nwidth, nheight);
+
+	int i = 0, j = 0;
+	uchar* pdata = img.bits();
+
+	//QImage img_test(nwidth, nheight, QImage::Format_RGB888);
+
+	QColor _color;
+
+	for (i = 0; i < nheight; i++)
+	{
+		for (j = 0; j < nwidth; j++)
+		{
+			_color = img.pixel(j, i);
+			im->c1[i*nwidth + j] = (float)_color.red();
+			im->c2[i*nwidth + j] = (float)_color.green();
+			im->c3[i*nwidth + j] = (float)_color.blue();
+
+			
+			//img_test.setPixel(j, i, _color.rgb());					
+			
+		}
+	}
+
+	//img_test.save("hello.jpg");
+
+	return true;
 }
 
 //im must malloc memeory
@@ -110,6 +162,13 @@ static void usage(void) {
 
 
 int main(int argc,char **args) {
+
+// 	color_image_t* im1 = NULL;
+// 	loadImage("./113.221916_23.109324_0.png", im1);
+// 	color_image_delete(im1);
+// 	im1 = NULL;
+	
+	//return 1;
   
  // const char *infilename="./ar.ppm";
   int width = 500, height = 500;
@@ -152,7 +211,7 @@ int main(int argc,char **args) {
   }
   */
 
-  
+   
   color_image_t *im=Random_produce_ppm(width, height);
 
   

@@ -174,7 +174,7 @@ uint16_t SementicSegImage(anet_type& net, matrix<rgb_pixel> input_image, matrix<
 int main(int argc, char** argv) try
 {
 	anet_type net;
-	deserialize("./semantic_segmentation_xxxx_net.dnn") >> net;
+	deserialize("./semantic_segmentation_own_net.dnn") >> net;
 	cout << "load net success." << endl;
 
 	QString inputFileName = "./data_jpg/work.jpg";
