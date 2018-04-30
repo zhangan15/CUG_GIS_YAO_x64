@@ -171,7 +171,7 @@ int main(int argc,char **args) {
 	//return 1;
   
  // const char *infilename="./ar.ppm";
-  int width = 500, height = 500;
+  //int width = 500, height = 500;
   int nblocks=4;
   int n_scale=4;
   int orientations_per_scale[50]={8,8,8,8};
@@ -212,18 +212,50 @@ int main(int argc,char **args) {
   */
 
    
-  color_image_t *im=Random_produce_ppm(width, height);
+  color_image_t *im = NULL;//Random_produce_ppm(width, height);
 
-  
-  float *desc=color_gist_scaletab(im,nblocks,n_scale,orientations_per_scale);   
-  
-  /* print descriptor */
-  for(i=0;i<descsize;i++) 
-    printf("%.4f ",desc[i]);
+  QFileInfoList filist = QDir("E:/Data/streetview_photos_Haizhu/streetview_photos_ll").entryInfoList(QStringList(QString("*.png")));
+  cout << "file size = " << filist.size() << endl;
 
-  printf("\n");
+  QFile outfile("./image_info_gist.csv");
+  outfile.open(QIODevice::WriteOnly);
+  QTextStream _in(&outfile);
+
+  QString str = "filename";
+  for (int i=0; i<descsize; i++)
+	  str += QString(", %1").arg(i);
+  _in << str << "\r\n";
+  _in.flush();
+
+  int nCount = 0;
+  foreach (QFileInfo fi, filist)
+  {
+	  nCount++;
+	  if (!loadImage(fi.absoluteFilePath().toLocal8Bit().data(), im))
+	  {
+		  cout << "[error] load image fail. image name = " << fi.absoluteFilePath().toLocal8Bit().data() << endl;
+		  continue;
+	  }
+	  cout << nCount << " / "<< filist.size() <<" - load image success. image name = " << fi.absoluteFilePath().toLocal8Bit().data() << endl;
+
+	  //read file
+	  float *desc = color_gist_scaletab(im, nblocks, n_scale, orientations_per_scale);
+
+	  QString str = fi.completeBaseName();
+	  for (int i = 0; i < descsize; i++)
+		  str += QString(", %1").arg(desc[i], 0, 'f', 6);
+	  _in << str << "\r\n";
+	  _in.flush();
+	  /* print descriptor */
+// 	  for (i = 0; i < descsize; i++)
+// 		  printf("%.4f ", desc[i]);
+// 
+// 	  printf("\n");
+
+	  free(desc);
+  }
   
-  free(desc);
+  
 
 
 
