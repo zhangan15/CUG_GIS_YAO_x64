@@ -63,8 +63,18 @@ void StreetViewRatingApp::showImg()
 	while (1)
 	{
 		int nId = rand() % mvImgScores.size();
-		if (mvImgScores[nId].nScore >= 0 )
+
+		//find unrated image
+		if (mvImgScores[nId].nScore >= 0)
+		{
+			//if all images have been scored, then exit.
+			if (mvScoredImg.size() == mvImgScores.size())
+			{
+				ui.statusLbl->setText(QString("All %1 images have been rated. Please save scores to file. Thank you.").arg(mvImgScores.size()));
+				break;
+			}
 			continue;
+		}
 
 		QImage img;
 		if (!img.load(mvImgScores[nId].sfilename))
@@ -73,6 +83,7 @@ void StreetViewRatingApp::showImg()
 		ui.imgLbl->setPixmap(QPixmap::fromImage(img));
 		ui.filepathLbl->setText(QString("Image ID: %1, %2").arg(nId).arg(mvImgScores[nId].sfilename));
 		mnCurID = nId;
+		ui.valueBox->setValue(50);
 		break;		
 	}
 }
@@ -133,4 +144,44 @@ void StreetViewRatingApp::keyPressEvent(QKeyEvent *e)
 		showImg();
 	else if (e->key() == Qt::Key_R)
 		rating();
+
+	switch (e->key())
+	{
+	case Qt::Key_0:
+		ui.valueBox->setValue(0);
+		break;
+	case Qt::Key_1:
+		ui.valueBox->setValue(10);
+		break;
+	case Qt::Key_2:
+		ui.valueBox->setValue(20);
+		break;
+	case Qt::Key_3:
+		ui.valueBox->setValue(30);
+		break;
+	case Qt::Key_4:
+		ui.valueBox->setValue(40);
+		break;
+	case Qt::Key_5:
+		ui.valueBox->setValue(50);
+		break;
+	case Qt::Key_6:
+		ui.valueBox->setValue(60);
+		break;
+	case Qt::Key_7:
+		ui.valueBox->setValue(70);
+		break;
+	case Qt::Key_8:
+		ui.valueBox->setValue(80);
+		break;
+	case Qt::Key_9:
+		ui.valueBox->setValue(90);
+		break;
+	case Qt::Key_Equal:
+		ui.valueBox->setValue(ui.valueBox->value() + 5);
+		break;
+	case Qt::Key_Minus:
+		ui.valueBox->setValue(ui.valueBox->value() - 5);
+		break;		
+	}
 }

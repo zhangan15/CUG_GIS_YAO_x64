@@ -88,17 +88,27 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+      <widget class="QLabel" name="tipsLbl">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>16777215</width>
          <height>20</height>
         </size>
        </property>
-      </spacer>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Shortcut Keys] (0 - 9)&lt;/span&gt;: Quick Score, &lt;span style=&quot; font-weight:600;&quot;&gt;+ / -&lt;/span&gt;: Add/Sub Scores, &lt;span style=&quot; font-weight:600;&quot;&gt;R&lt;/span&gt;: Rating, &lt;span style=&quot; font-weight:600;&quot;&gt;S&lt;/span&gt;: Skip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
