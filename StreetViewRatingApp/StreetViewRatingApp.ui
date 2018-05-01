@@ -282,7 +282,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Skip</string>
+        <string>Skip (S)</string>
        </property>
       </widget>
      </item>
@@ -308,7 +308,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Rating !</string>
+        <string>Rating ! (R)</string>
        </property>
       </widget>
      </item>

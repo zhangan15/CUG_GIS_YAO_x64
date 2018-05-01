@@ -27,7 +27,9 @@ protected:
 	void rating();
 	void saveData();
 
+private:
 	void closeEvent(QCloseEvent *e);
+	void keyPressEvent(QKeyEvent *e);
 
 
 private:

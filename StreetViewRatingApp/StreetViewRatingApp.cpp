@@ -87,6 +87,7 @@ void StreetViewRatingApp::rating()
 	mvScoredImg.append(mvImgScores[mnCurID]);
 
 	ui.statusLbl->setText(QString("You have rated %1 images (total count = %2).").arg(mvScoredImg.size()).arg(mvImgScores.size()));
+	ui.nextBtn->setFocus();
 }
 
 void StreetViewRatingApp::saveData()
@@ -124,4 +125,12 @@ void StreetViewRatingApp::closeEvent(QCloseEvent *e)
 		saveData();
 
 	e->accept();
+}
+
+void StreetViewRatingApp::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_S)
+		showImg();
+	else if (e->key() == Qt::Key_R)
+		rating();
 }
