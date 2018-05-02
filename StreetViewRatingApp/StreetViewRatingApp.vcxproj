@@ -125,6 +125,7 @@
     <ClCompile Include="alglib\solvers.cpp" />
     <ClCompile Include="alglib\specialfunctions.cpp" />
     <ClCompile Include="alglib\statistics.cpp" />
+    <ClCompile Include="LoadFeatureThread.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StreetViewRatingApp.cpp" />
   </ItemGroup>
@@ -155,6 +156,12 @@
     <ClInclude Include="alglib\specialfunctions.h" />
     <ClInclude Include="alglib\statistics.h" />
     <ClInclude Include="alglib\stdafx.h" />
+    <QtMoc Include="LoadFeatureThread.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+    </QtMoc>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

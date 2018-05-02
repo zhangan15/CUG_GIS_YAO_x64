@@ -3,6 +3,8 @@
 #include <QtCore>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QEventLoop>
+#include "LoadFeatureThread.h"
 
 bool IMAGE_SCORE::operator==(IMAGE_SCORE s)
 {
@@ -49,6 +51,15 @@ StreetViewRatingApp::StreetViewRatingApp(QWidget *parent)
 	mnGapImageNum = 5;	
 	mdUserErrorThreshold = 30;
 
+	//
+	//mpFeatureThread = NULL;
+
+}
+
+StreetViewRatingApp::~StreetViewRatingApp()
+{
+// 	if (mpFeatureThread != NULL)
+// 		delete mpFeatureThread;
 }
 
 void StreetViewRatingApp::openDir()
@@ -80,6 +91,15 @@ void StreetViewRatingApp::openDir()
 		mvImgScores.append(imgSr);
 	}
 
+	LoadFeatureThread thr(this);
+	thr.start();
+
+	QEventLoop loop;
+	connect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
+	connect(&thr, &LoadFeatureThread::finished, &loop, &QEventLoop::quit);
+	loop.exec();
+
+	/*
 	//load features.csv
 	QFile featureFile(dir+"./features.csv");
 	if (!featureFile.open(QIODevice::ReadOnly))
@@ -155,10 +175,11 @@ void StreetViewRatingApp::openDir()
 			trainRfPredictor();
 		}
 	}
-	
+	*/
 	mnAddDataCount = 0;
 	ui.statusLbl->setText(QString("Load %1 images with %2-D features. %3 images have been rated.").arg(mvImgScores.size()).arg(mnFeatureDimension).arg(mvScoredImg.size()));
 	showImg();
+
 }
 
 void StreetViewRatingApp::showImg()

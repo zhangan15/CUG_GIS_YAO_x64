@@ -10,6 +10,8 @@
 #include "alglib/dataanalysis.h"
 #include "alglib/alglibmisc.h"
 
+class LoadFeatureThread;
+
 class IMAGE_SCORE 
 {
 public:
@@ -32,6 +34,7 @@ class StreetViewRatingApp : public QDialog
 
 public:
 	StreetViewRatingApp(QWidget *parent = Q_NULLPTR);
+	~StreetViewRatingApp();
 
 protected slots:
 	void openDir();
@@ -45,17 +48,19 @@ protected:
 private:
 	void closeEvent(QCloseEvent *e);
 	void keyPressEvent(QKeyEvent *e);
+
+public:
 	void trainRfPredictor();
 
 
-private:
+public:
 	Ui::StreetViewRatingAppClass ui;
 	QList<IMAGE_SCORE> mvImgScores;
 	QList<IMAGE_SCORE> mvScoredImg;
 	int mnCurID;
 	QString msCurDir;
 
-private:
+public:
 	alglib::decisionforest mdRfFitter;
 	alglib::ae_int_t mnRfStatus;
 	alglib::dfreport mRfReport;
@@ -72,6 +77,8 @@ private:
 	alglib::mlptrainer mNNtrn;
 	alglib::multilayerperceptron mNetwork;
 	alglib::mlpreport mNNRep;
+
+	//LoadFeatureThread* mpFeatureThread;
 
 
 };
