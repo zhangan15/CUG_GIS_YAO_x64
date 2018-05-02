@@ -6,10 +6,24 @@
 #include <QString>
 #include <QList>
 
-struct IMAGE_SCORE 
+#include "alglib/statistics.h"
+#include "alglib/dataanalysis.h"
+#include "alglib/alglibmisc.h"
+
+class IMAGE_SCORE 
 {
+public:
+	IMAGE_SCORE() { sfilename = "", nScore = -1; vFeatures.clear(); }
+	~IMAGE_SCORE() { sfilename = "", nScore = -1; vFeatures.clear(); };
+	IMAGE_SCORE(QString sName) { sfilename = sName.trimmed()+".addsuffix", nScore = -1; vFeatures.clear(); }
+
+public:
+	bool operator==(IMAGE_SCORE s);
+
+public:
 	QString sfilename;
 	float nScore;
+	QList<float> vFeatures;	//find features.csv
 };
 
 class StreetViewRatingApp : public QDialog
@@ -26,10 +40,12 @@ protected:
 	void showImg();
 	void rating();
 	void saveData();
+	void autoSaveData(QString sfilename);
 
 private:
 	void closeEvent(QCloseEvent *e);
 	void keyPressEvent(QKeyEvent *e);
+	void trainRfPredictor();
 
 
 private:
@@ -38,4 +54,20 @@ private:
 	QList<IMAGE_SCORE> mvScoredImg;
 	int mnCurID;
 	QString msCurDir;
+
+private:
+	alglib::decisionforest mdRfFitter;
+	alglib::ae_int_t mnRfStatus;
+	alglib::dfreport mRfReport;
+	int mnAddDataCount;
+	double mdUserError;
+	double mdUserErrorThreshold;	// average error per mnAddDataCount
+	double mdCurSimValue;
+	int mnFeatureDimension;
+	int mnGapImageNum;
+	int mnStartImageNum;
+	QString msLogFile;
+	double mdRatio;
+
+
 };

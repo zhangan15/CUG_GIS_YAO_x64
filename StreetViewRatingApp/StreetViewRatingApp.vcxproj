@@ -112,6 +112,19 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alglib\alglibinternal.cpp" />
+    <ClCompile Include="alglib\alglibmisc.cpp" />
+    <ClCompile Include="alglib\ap.cpp" />
+    <ClCompile Include="alglib\dataanalysis.cpp" />
+    <ClCompile Include="alglib\diffequations.cpp" />
+    <ClCompile Include="alglib\fasttransforms.cpp" />
+    <ClCompile Include="alglib\integration.cpp" />
+    <ClCompile Include="alglib\interpolation.cpp" />
+    <ClCompile Include="alglib\linalg.cpp" />
+    <ClCompile Include="alglib\optimization.cpp" />
+    <ClCompile Include="alglib\solvers.cpp" />
+    <ClCompile Include="alglib\specialfunctions.cpp" />
+    <ClCompile Include="alglib\statistics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StreetViewRatingApp.cpp" />
   </ItemGroup>
@@ -126,6 +139,22 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StreetViewRatingApp.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alglib\alglibinternal.h" />
+    <ClInclude Include="alglib\alglibmisc.h" />
+    <ClInclude Include="alglib\ap.h" />
+    <ClInclude Include="alglib\dataanalysis.h" />
+    <ClInclude Include="alglib\diffequations.h" />
+    <ClInclude Include="alglib\fasttransforms.h" />
+    <ClInclude Include="alglib\integration.h" />
+    <ClInclude Include="alglib\interpolation.h" />
+    <ClInclude Include="alglib\linalg.h" />
+    <ClInclude Include="alglib\optimization.h" />
+    <ClInclude Include="alglib\solvers.h" />
+    <ClInclude Include="alglib\specialfunctions.h" />
+    <ClInclude Include="alglib\statistics.h" />
+    <ClInclude Include="alglib\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
