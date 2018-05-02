@@ -45,6 +45,7 @@ StreetViewRatingApp::StreetViewRatingApp(QWidget *parent)
 	mdUserError = 0.0f;
 	mnFeatureDimension = 0;
 	mdRatio = 1.0f;
+	mbCanRating = false;
 
 	//need set params
 	mnStartImageNum = 50;
@@ -91,13 +92,32 @@ void StreetViewRatingApp::openDir()
 		mvImgScores.append(imgSr);
 	}
 
-	LoadFeatureThread thr(this);
-	thr.start();
+	if (!QFile::exists(dir + "./features.csv"))
+	{
+		QMessageBox::critical(this, "Missing feature file", "load feature.csv file error.");
+		mvImgScores.clear();
+		mbCanRating = false;
+	}
+	else
+	{
+		LoadFeatureThread thr(this);
+		thr.start();
 
-	QEventLoop loop;
-	connect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
-	connect(&thr, &LoadFeatureThread::finished, &loop, &QEventLoop::quit);
-	loop.exec();
+		QEventLoop loop;
+		connect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
+		connect(&thr, &LoadFeatureThread::finished, &loop, &QEventLoop::quit);
+		loop.exec();
+
+		ui.nextBtn->setEnabled(true);
+		ui.saveBtn->setEnabled(true);
+		ui.skipBtn->setEnabled(true);
+
+		mnAddDataCount = 0;
+		ui.statusLbl->setText(QString("Load %1 images with %2-D features. %3 images have been rated.").arg(mvImgScores.size()).arg(mnFeatureDimension).arg(mvScoredImg.size()));
+		showImg();
+		mbCanRating = true;
+	}	
+
 
 	/*
 	//load features.csv
@@ -176,15 +196,16 @@ void StreetViewRatingApp::openDir()
 		}
 	}
 	*/
-	mnAddDataCount = 0;
-	ui.statusLbl->setText(QString("Load %1 images with %2-D features. %3 images have been rated.").arg(mvImgScores.size()).arg(mnFeatureDimension).arg(mvScoredImg.size()));
-	showImg();
+
+	
+
+	
 
 }
 
 void StreetViewRatingApp::showImg()
 {
-	if (mvImgScores.size() == 0)
+	if (mbCanRating == false || mvImgScores.size() == 0)
 		return;
 
 	while (1)
@@ -248,7 +269,7 @@ void StreetViewRatingApp::showImg()
 
 void StreetViewRatingApp::rating()
 {
-	if (mvImgScores.size() == 0)
+	if (mbCanRating == false || mvImgScores.size() == 0)
 		return;
 	
 	mvImgScores[mnCurID].nScore = ui.valueBox->value();
@@ -277,6 +298,9 @@ void StreetViewRatingApp::rating()
 
 void StreetViewRatingApp::saveData()
 {
+	if (mbCanRating == false || mvScoredImg.size() == 0)
+		return;
+
 	QString savefilepath = QFileDialog::getSaveFileName(this, "Save rating file", msCurDir, "*.csv");
 	if (savefilepath.isEmpty())
 		return;
@@ -373,6 +397,9 @@ void StreetViewRatingApp::keyPressEvent(QKeyEvent *e)
 	case Qt::Key_9:
 		ui.valueBox->setValue(90);
 		break;
+	case Qt::Key_P:
+		ui.valueBox->setValue(100);
+		break;
 	case Qt::Key_Equal:
 		ui.valueBox->setValue(ui.valueBox->value() + 5);
 		break;
@@ -389,6 +416,8 @@ void StreetViewRatingApp::trainRfPredictor()
 		//ui.statusLbl->setText("The total rated image is too small, the predictor will not train.");
 		return;
 	}
+
+	mbCanRating = false;
 
 	ui.statusLbl->setText("The predictor is training, please waiting...");
 
@@ -421,7 +450,7 @@ void StreetViewRatingApp::trainRfPredictor()
 		return;
 	QTextStream _in(&_f);
 	_in << "******" << "\r\n";
-	_in << QString("DATE AND TIME: %1").arg(QDateTime::currentDateTime().toString("YY-MM-DD hh:mm:ss")) << "\r\n";
+	_in << QString("DATE AND TIME: %1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")) << "\r\n";
 	_in << QString("IUPUT DATA COUNT = %1").arg(mvScoredImg.size()) << "\r\n";
 
 	if (mnRfStatus < 0)
@@ -469,5 +498,6 @@ void StreetViewRatingApp::trainRfPredictor()
 
 	mdUserError = 0;
 	mnAddDataCount = 0;
+	mbCanRating = true;
 }
 

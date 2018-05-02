@@ -30,7 +30,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Street View Rating App @ HPSCIL</string>
+   <string>Street View Rating App (Man-machellone Supported) @ HPSCIL</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -63,6 +63,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="saveBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -266,12 +269,15 @@
         </font>
        </property>
        <property name="text">
-        <string/>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright reserved by Yao Yao. ( mailto: &lt;a href=&quot;mailto: yaoy@cug.edu.cn&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;yaoy@cug.edu.cn&lt;/span&gt;&lt;/a&gt; ) Version 2.0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="skipBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -298,6 +304,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="nextBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>75</width>
