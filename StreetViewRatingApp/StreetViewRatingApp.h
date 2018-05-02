@@ -69,5 +69,9 @@ private:
 	QString msLogFile;
 	double mdRatio;
 
+	alglib::mlptrainer mNNtrn;
+	alglib::multilayerperceptron mNetwork;
+	alglib::mlpreport mNNRep;
+
 
 };

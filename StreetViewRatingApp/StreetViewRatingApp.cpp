@@ -42,7 +42,7 @@ StreetViewRatingApp::StreetViewRatingApp(QWidget *parent)
 	mnAddDataCount = 0;
 	mdUserError = 0.0f;
 	mnFeatureDimension = 0;
-	mdRatio = 100.0f;
+	mdRatio = 1.0f;
 
 	//need set params
 	mnStartImageNum = 50;
@@ -196,10 +196,22 @@ void StreetViewRatingApp::showImg()
 			inData.setlength(mnFeatureDimension);
 			for (int i = 0; i < mnFeatureDimension; i++)
 				inData[i] = mvImgScores[nId].vFeatures[i];
+
 			alglib::dfprocess(mdRfFitter, inData, simScore);
 			double dval = simScore[0] * mdRatio;
 			if (dval < 0) dval = 0;
 			if (dval > 100) dval = 100;
+
+// 			alglib::mlpprocess(mNetwork, inData, simScore);
+// 			double dval = 0;
+// 			int nsize = simScore.length();
+// 			for (int i = 0; i<nsize; i++)
+// 			{
+// 				double dratio = simScore[i];
+// 				dval += i*dratio;
+// 			}
+			
+
 			int simval = int(dval + 0.5);
 			mdCurSimValue = dval;
 			ui.valueBox->setValue(simval);
@@ -363,17 +375,24 @@ void StreetViewRatingApp::trainRfPredictor()
 	alglib::real_2d_array arr;
 	arr.setlength(mvScoredImg.size(), mnFeatureDimension + 1);
 	int i, j;
+	int nClass = 0;
 	for (i=0; i<mvScoredImg.size(); i++)
 	{
 		for (j=0; j<mnFeatureDimension; j++)
 			arr[i][j] = mvScoredImg[i].vFeatures[j];
-		arr[i][mnFeatureDimension] = double(mvImgScores[i].nScore)/mdRatio;
+		arr[i][mnFeatureDimension] = int(double(mvScoredImg[i].nScore)/mdRatio+0.5);
+		nClass = nClass < mvScoredImg[i].nScore ? mvScoredImg[i].nScore : nClass;
 	}
 	
 
 	mnRfStatus = -1;	
 	alglib::dfbuildrandomdecisionforest(arr, mvScoredImg.size(), mnFeatureDimension, 1, 50, 0.66, mnRfStatus, mdRfFitter, mRfReport);
 	
+	//nn
+// 	alglib::mlpcreatetrainer(mnFeatureDimension, nClass, mNNtrn);
+// 	alglib::mlpcreate1(mnFeatureDimension, 20, nClass, mNetwork);
+// 	alglib::mlpsetdataset(mNNtrn, arr, mvScoredImg.size());
+// 	alglib::mlptrainnetwork(mNNtrn, mNetwork, 5, mNNRep);
 
 	// write to log file
 	QFile _f(msLogFile);
@@ -402,7 +421,16 @@ void StreetViewRatingApp::trainRfPredictor()
 		_in << QString("RFA OOB AVGCE = %1").arg(mRfReport.oobavgce, 0, 'f', 6) << "\r\n";
 		_in << QString("RFA OOB AVG ERROR = %1").arg(mRfReport.oobavgerror, 0, 'f', 6) << "\r\n";
 		_in << QString("RFA OOB AVG REL CLS ERROR = %1").arg(mRfReport.oobrelclserror, 0, 'f', 6) << "\r\n";
-		_in << QString("RFA OOB RMSE ERROR = %1").arg(mRfReport.oobrmserror, 0, 'f', 6) << "\r\n";		
+		_in << QString("RFA OOB RMSE ERROR = %1").arg(mRfReport.oobrmserror, 0, 'f', 6) << "\r\n";	
+
+// 		_in << QString("NN AVECE = %1").arg(mNNRep.avgce, 0, 'f', 6) << "\r\n";
+// 		_in << QString("NN AVG ERROR = %1").arg(mNNRep.avgerror, 0, 'f', 6) << "\r\n";
+// 		_in << QString("NN AVG REL ERROR = %1").arg(mNNRep.avgrelerror, 0, 'f', 6) << "\r\n";
+// 		_in << QString("NN CHOLESKY = %1").arg(mNNRep.ncholesky) << "\r\n";
+// 		_in << QString("NN RMSE ERROR = %1").arg(mNNRep.rmserror, 0, 'f', 6) << "\r\n";
+// 		_in << QString("NN GRAD = %1").arg(mNNRep.ngrad) << "\r\n";
+// 		_in << QString("NN HESS = %1").arg(mNNRep.nhess) << "\r\n";
+// 		_in << QString("NN REL CLS ERROR = %1").arg(mNNRep.relclserror, 0, 'f', 6) << "\r\n";
 
 		std::string sRFStructure;
 		alglib::dfserialize(mdRfFitter, sRFStructure);
