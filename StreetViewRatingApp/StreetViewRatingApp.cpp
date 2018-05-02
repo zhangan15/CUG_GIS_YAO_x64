@@ -48,7 +48,7 @@ StreetViewRatingApp::StreetViewRatingApp(QWidget *parent)
 
 	//need set params
 	mnStartImageNum = 50;
-	mnGapImageNum = 5;	
+	mnGapImageNum = 10;	
 	mdUserErrorThreshold = 30;
 
 	//
