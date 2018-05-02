@@ -106,7 +106,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Shortcut Keys] (0 - 9)&lt;/span&gt;: Quick Score, &lt;span style=&quot; font-weight:600;&quot;&gt;+ / -&lt;/span&gt;: Add/Sub Scores, &lt;span style=&quot; font-weight:600;&quot;&gt;R&lt;/span&gt;: Rating, &lt;span style=&quot; font-weight:600;&quot;&gt;S&lt;/span&gt;: Skip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Shortcut Keys] (0 - 9)&lt;/span&gt;: Quick Score, &lt;span style=&quot; font-weight:600;&quot;&gt;P&lt;/span&gt;: 100,  &lt;span style=&quot; font-weight:600;&quot;&gt;+ / -&lt;/span&gt;: Add/Sub Scores, &lt;span style=&quot; font-weight:600;&quot;&gt;R&lt;/span&gt;: Rating, &lt;span style=&quot; font-weight:600;&quot;&gt;S&lt;/span&gt;: Skip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
