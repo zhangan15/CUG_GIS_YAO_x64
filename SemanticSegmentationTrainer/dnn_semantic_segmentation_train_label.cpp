@@ -288,9 +288,9 @@ double calculate_accuracy(anet_type& anet, const std::vector<image_info>& datase
 
 int main(int argc, char** argv) try
 {
-    if (argc < 3)
+    if (argc < 5)
     {
-        cout << "./dnn_semantic_segmentation_train_ex batch_size window_size" << endl;
+        cout << "./dnn_semantic_segmentation_train_ex ./ADEChallengeData2016_DIR ./Semantic_segmentation_ADE20K_net.dnn batch_size window_size" << endl;
         return 1;
     }
 
@@ -300,8 +300,15 @@ int main(int argc, char** argv) try
 // 		return -1;
 // 	}
 
-	int batch_size = atoi(argv[1]);
-	int window_size = atoi(argv[2]);
+	char sfolder[2048];
+	strcpy(sfolder, argv[1]);
+	cout << "data folder: " << sfolder << endl;
+	char sOutputDnn[2048];
+	strcpy(sOutputDnn, argv[2]);
+	cout << "output DNN file: " << sOutputDnn << endl;
+
+	int batch_size = atoi(argv[3]);
+	int window_size = atoi(argv[4]);
 
 	if (batch_size <= 1) batch_size = 2;
 	if (window_size <= 10) window_size = 10;
@@ -311,7 +318,7 @@ int main(int argc, char** argv) try
 	
 // 	
 
-	const char* sfolder = "E:\\Data\\ADEChallengeData2016";
+	
 	//int nCount = getClassFromFile(QString(QString(sfolder) + "/objectInfo150.txt").toLocal8Bit().data(), classes);
 
     cout << "\nSCANNING SEGMENTATION DATASET\n" << endl;
@@ -429,7 +436,7 @@ int main(int argc, char** argv) try
 
     net.clean();
     cout << "saving network" << endl;
-    serialize("./semantic_segmentation_ADE20K_batch2_Window5_net.dnn") << net;
+    serialize(sOutputDnn) << net;
 
 	cout << "Step 4: saving net success." << endl;
 
