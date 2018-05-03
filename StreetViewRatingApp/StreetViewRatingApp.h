@@ -74,9 +74,9 @@ public:
 	QString msLogFile;
 	double mdRatio;
 
-	alglib::mlptrainer mNNtrn;
-	alglib::multilayerperceptron mNetwork;
-	alglib::mlpreport mNNRep;
+// 	alglib::mlptrainer mNNtrn;
+// 	alglib::multilayerperceptron mNetwork;
+// 	alglib::mlpreport mNNRep;
 
 	//LoadFeatureThread* mpFeatureThread;
 	bool mbCanRating;

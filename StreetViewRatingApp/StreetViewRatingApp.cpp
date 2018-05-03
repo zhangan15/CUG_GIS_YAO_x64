@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QEventLoop>
 #include "LoadFeatureThread.h"
+#include "TrainingThread.h"
 
 bool IMAGE_SCORE::operator==(IMAGE_SCORE s)
 {
@@ -49,7 +50,7 @@ StreetViewRatingApp::StreetViewRatingApp(QWidget *parent)
 
 	//need set params
 	mnStartImageNum = 50;
-	mnGapImageNum = 10;	
+	mnGapImageNum = 20;	
 	mdUserErrorThreshold = 30;
 
 	//
@@ -107,6 +108,9 @@ void StreetViewRatingApp::openDir()
 		connect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
 		connect(&thr, &LoadFeatureThread::finished, &loop, &QEventLoop::quit);
 		loop.exec();
+		disconnect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
+		disconnect(&thr, &LoadFeatureThread::finished, &loop, &QEventLoop::quit);
+
 
 		ui.nextBtn->setEnabled(true);
 		ui.saveBtn->setEnabled(true);
@@ -360,6 +364,9 @@ void StreetViewRatingApp::closeEvent(QCloseEvent *e)
 
 void StreetViewRatingApp::keyPressEvent(QKeyEvent *e)
 {
+	if (!mbCanRating)
+		return;
+
 	if (e->key() == Qt::Key_S)
 		showImg();
 	else if (e->key() == Qt::Key_R)
@@ -422,6 +429,7 @@ void StreetViewRatingApp::trainRfPredictor()
 	ui.statusLbl->setText("The predictor is training, please waiting...");
 
 	//构建数据集
+	/*
 	alglib::real_2d_array arr;
 	arr.setlength(mvScoredImg.size(), mnFeatureDimension + 1);
 	int i, j;
@@ -437,7 +445,22 @@ void StreetViewRatingApp::trainRfPredictor()
 
 	mnRfStatus = -1;	
 	alglib::dfbuildrandomdecisionforest(arr, mvScoredImg.size(), mnFeatureDimension, 1, 50, 0.66, mnRfStatus, mdRfFitter, mRfReport);
-	
+	*/
+
+	//this->setEnabled(false);
+
+	TrainingThread thr(this);
+	thr.start();
+
+	QEventLoop loop;
+	//connect(&thr, &LoadFeatureThread::sendMsg, ui.statusLbl, &QLabel::setText);
+	connect(&thr, &TrainingThread::finished, &loop, &QEventLoop::quit);
+	loop.exec();
+	//disconnect(&thr, &TrainingThread::finished, &loop, &QEventLoop::quit);
+
+	//this->setEnabled(true);
+	//ui.nextBtn->setEnabled(true);
+
 	//nn
 // 	alglib::mlpcreatetrainer(mnFeatureDimension, nClass, mNNtrn);
 // 	alglib::mlpcreate1(mnFeatureDimension, 20, nClass, mNetwork);

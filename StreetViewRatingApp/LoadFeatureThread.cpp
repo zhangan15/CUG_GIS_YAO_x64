@@ -7,7 +7,7 @@
 LoadFeatureThread::LoadFeatureThread(QObject *parent)
 	: QThread(parent)
 {
-	mpApp = (StreetViewRatingApp*)this->parent();
+	mpApp = (StreetViewRatingApp*)parent;
 }
 
 LoadFeatureThread::~LoadFeatureThread()
