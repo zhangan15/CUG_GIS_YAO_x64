@@ -343,7 +343,7 @@ int main(int argc, char** argv) try
     dnn_trainer<net_type> trainer(net,sgd(weight_decay, momentum));
     trainer.be_verbose();
     trainer.set_learning_rate(initial_learning_rate);
-    trainer.set_synchronization_file("trainer_state_file.dat", std::chrono::minutes(10));
+    trainer.set_synchronization_file("./trainer_state_file.dat", std::chrono::minutes(10));
     // This threshold is probably excessively large.
     trainer.set_iterations_without_progress_threshold(10000);
     // Since the progress threshold is so large might as well set the batch normalization
