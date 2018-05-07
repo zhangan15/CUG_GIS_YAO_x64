@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StreetViewRatingApp", "Stre
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StreetViewRatingConsole", "StreetViewRatingConsole\StreetViewRatingConsole.vcxproj", "{2719AE12-C056-46B8-9532-251B53A4CBC9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LatLon2GeoHash", "LatLon2GeoHash\LatLon2GeoHash.vcxproj", "{F5463796-43B4-44BE-BE5F-DEE7496A0923}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -143,6 +145,12 @@ Global
 		{2719AE12-C056-46B8-9532-251B53A4CBC9}.Release|x64.ActiveCfg = Release|x64
 		{2719AE12-C056-46B8-9532-251B53A4CBC9}.Release|x64.Build.0 = Release|x64
 		{2719AE12-C056-46B8-9532-251B53A4CBC9}.Release|x86.ActiveCfg = Release|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Debug|x64.ActiveCfg = Debug|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Debug|x64.Build.0 = Debug|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Debug|x86.ActiveCfg = Debug|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Release|x64.ActiveCfg = Release|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Release|x64.Build.0 = Release|x64
+		{F5463796-43B4-44BE-BE5F-DEE7496A0923}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
