@@ -1,4 +1,3 @@
-#include <QtCore/QCoreApplication>
 #include <GeoHash.h>
 
 #include <iostream>
