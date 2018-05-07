@@ -24,7 +24,7 @@ const string Borders[2][4] = {
 };
 
 #define EARTH_RADIUS 6378.137
-#define PI 3.141592654
+
 
 //½Ç¶È×ª»¡¶È
 double rad(double d)
