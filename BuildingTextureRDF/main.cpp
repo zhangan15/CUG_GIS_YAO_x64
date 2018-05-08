@@ -12,23 +12,29 @@ int main(int argc, char *argv[])
 	//输入建筑物数据: csv, FIDColNum, LatColNum, LonColNum, PerAreaCol, FloorCountCol, HeightCol, DemCol, PerFloorHeight, GeoHashScale
 	btr.loadBuildingData("./data/eerduosi.csv", 0, 2, 3, 4, 1, -1, -1, 3.0, 8);
 
-// 	ObservedSphere test_obs;
-// 	test_obs.dlon = 109.95455734200;
-// 	test_obs.dlat = 39.80956918330;
-// 	test_obs.dCenterHeight = 0.0f;
-// 	test_obs.dMaxRadius = 10000.0f;
-// 	test_obs.dStepRadius = 50.0f;
+	//输入经纬度数据集和球参数 center_lat, center_lon, step_radius, max_radius, height, output_filename
 
-//	btr.calculateRdfValues(test_obs);
+	ObservedSphere test_obs;
+	test_obs.dlon = 109.95455734200;
+	test_obs.dlat = 39.80956918330;
+	test_obs.dCenterHeight = 0.0f;
+	test_obs.dMaxRadius = 10000.0f;
+	test_obs.dStepRadius = 50.0f;
+
+	btr.calculateRdfValues(test_obs);
 
 	//输出结果
-// 	int nCount = 0;
-// 	foreach(float val, test_obs.vdRdfValues)
-// 	{
-// 		cout << test_obs.dStepRadius + nCount*test_obs.dStepRadius << "," << val << endl;
-// 		nCount++;
-// 	}
+	int nCount = 0;
+	foreach(float val, test_obs.vdRdfValues)
+	{
+		cout << test_obs.dStepRadius + nCount*test_obs.dStepRadius << "," << val << endl;
+		nCount++;
+	}
 
+	cout << "Entropy: " << test_obs.dEntropy << endl;
+
+	return 0;
+	/*
 	//暂不设置obs的中心位置
 	ObservedSphere obs;
 	obs.dCenterHeight = 0.0f;
@@ -98,7 +104,7 @@ int main(int argc, char *argv[])
 	_in.flush();
 	_f.flush();
 	_f.close();
-
+	*/
 
 	/*
 	//测试高程

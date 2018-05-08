@@ -62,6 +62,7 @@ public:
 private:
 	void setAllGeoHashEnable();
 	double calculateSphereSegmentVol(double dDisHeight, double dR);
+	void logLn(QString smsg);
 
 public:
 	QHash<QString, QList<Building>> mvHashBuildings;	//存储所有地块的Building数据

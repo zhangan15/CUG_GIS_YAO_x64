@@ -24,12 +24,14 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLat
 {
 	if (nFloorCol < 0 && nHeightCol < 0)
 	{
-		cout << "ERROR: missing floor or height data." << endl;
+		logLn("ERROR: missing floor or height data.");
+		//cout << "ERROR: missing floor or height data." << endl;
 		return false;
 	}
 
 	mnGeoHashScale = nGeoHashScale;
-	cout << "GeoHash Scale = " << mnGeoHashScale << endl;
+	logLn(QString("GeoHash Scale = %1").arg(mnGeoHashScale));
+	//cout << "GeoHash Scale = " << mnGeoHashScale << endl;
 
 	//重置所有数据
 	mvHashBuildings.clear();
@@ -40,7 +42,8 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLat
 	QFile _f(sfilename);
 	if (!_f.open(QIODevice::ReadOnly))
 	{
-		cout << "ERROR: load building data fail." << endl;
+		logLn("ERROR: load building data fail.");
+		//cout << "ERROR: load building data fail." << endl;
 		return false;
 	}
 	QTextStream _in(&_f);
@@ -87,12 +90,15 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLat
 		nBuildingCount++;
 
 		if (nBuildingCount % 1000 == 0)
-			cout << "\tloading " << nBuildingCount << " building now ..." << endl;
+			logLn(QString("\tloading %1 building now ...").arg(nBuildingCount));
+			//cout << "\tloading " << nBuildingCount << " building now ..." << endl;
 		
 	}
 
-	cout << "Load file success. Building Count = " << nBuildingCount << endl;
-	cout << "GeoHash Count = " << mvHashBuildings.keys().size() << endl;
+	logLn(QString("Load file success. Total Number of Buildings = %1.").arg(nBuildingCount));
+	logLn(QString("GeoHash Count = %1.").arg(mvHashBuildings.keys().size()));
+	//cout << "Load file success. Building Count = " << nBuildingCount << endl;
+	//cout << "GeoHash Count = " << mvHashBuildings.keys().size() << endl;
 
 // 	long ntotalcount = 0;
 // 	foreach(QString s, msHashList)
@@ -304,4 +310,10 @@ double BuildingTextureRDF::calculateSphereSegmentVol(double dDisHeight, double d
 	double misSphere = PI*dDisHeight*dDisHeight*(dR - dDisHeight / 3.0f);
 	double sphereVal = 4.0f*PI*dR*dR*dR/3.0f;
 	return sphereVal - misSphere;
+}
+
+void BuildingTextureRDF::logLn(QString smsg)
+{
+	QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+	cout << QString("%1 : %2").arg(timestamp).arg(smsg).toStdString().data() << endl;
 }
