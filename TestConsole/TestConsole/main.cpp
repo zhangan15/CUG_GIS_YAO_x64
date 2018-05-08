@@ -162,20 +162,65 @@ int main(int argc, char *argv[])
 // 
 // 	cout << dsum << endl;
 
-	QDir dir("E:\\Data\\ADEChallengeData2016\\images\\validation");
-	QFileInfoList filist = dir.entryInfoList(QStringList(QString("*.jpg")));
-	cout << filist.size() << endl;
+// 	QDir dir("E:\\Data\\ADEChallengeData2016\\images\\validation");
+// 	QFileInfoList filist = dir.entryInfoList(QStringList(QString("*.jpg")));
+// 	cout << filist.size() << endl;
+// 
+// 	QFile file("E:\\Data\\ADEChallengeData2016\\validation.txt");
+// 	file.open(QIODevice::WriteOnly);
+// 	QTextStream _in(&file);
+// 	foreach(QFileInfo fi, filist)
+// 	{
+// 		_in << fi.completeBaseName() << "\r\n";
+// 	}
+// 	_in.flush();
+// 	file.close();
+// 	cout << "finished." << endl;
 
-	QFile file("E:\\Data\\ADEChallengeData2016\\validation.txt");
-	file.open(QIODevice::WriteOnly);
-	QTextStream _in(&file);
-	foreach(QFileInfo fi, filist)
+	QFile _inpf("D:\\Code\\SYSU_GIS_YAO_x64\\BuildingTextureRDF\\data\\all_buildings_step10_max500.csv");
+	QFile _outf("D:\\Code\\SYSU_GIS_YAO_x64\\BuildingTextureRDF\\data\\all_buildings_step10_max500_entropy.csv");
+	_inpf.open(QIODevice::ReadOnly);
+	_outf.open(QIODevice::WriteOnly);
+	QTextStream _in(&_inpf), _out(&_outf);
+	QString s = _in.readLine();
+	QStringList slist = s.split(",");
+	int nFeatureSize = slist.size() - 4;
+
+	_out << "nFID, entropy" << "\r\n";
+
+	/////////////////////////////////////////
+	while (!_in.atEnd())
 	{
-		_in << fi.completeBaseName() << "\r\n";
+		s = _in.readLine();
+		slist = s.split(",");
+
+		if (slist.size() <= nFeatureSize)
+			continue;
+
+		long nID = slist[0].trimmed().toLong();
+		double dEntropy = 0;
+		for (int i = 4; i < slist.size(); i++)
+		{
+			double dval = slist[i].trimmed().toDouble();
+			if (dval < 10e-6)
+				continue;
+			dEntropy += dval*log(dval);
+		}
+		dEntropy = -dEntropy;
+
+		_out << QString("%1, %2").arg(nID).arg(dEntropy, 0, 'f', 6) << "\r\n";
+
+		_out.flush();
+
 	}
-	_in.flush();
-	file.close();
-	cout << "finished." << endl;
+
+
+	_inpf.close();
+	_out.flush();
+	_outf.flush();
+	_outf.close();
+
+	cout << "process success." << endl;
 
 	return a.exec();
 }

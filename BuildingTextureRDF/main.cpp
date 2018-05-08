@@ -29,22 +29,34 @@ int main(int argc, char *argv[])
 // 		nCount++;
 // 	}
 
+	//暂不设置obs的中心位置
+	ObservedSphere obs;
+	obs.dCenterHeight = 0.0f;
+	obs.dMaxRadius = 1000.0f;
+	obs.dStepRadius = 20.0f;
+
 	//计算所有建筑物的val
-	QString sfilename = QString("./Data/all_buildings.csv");
+	QString sfilename = QString("./Data/all_buildings_step%1_max%2.csv").arg(obs.dStepRadius, 0, 'f', 0).arg(obs.dMaxRadius, 0, 'f', 0);
 	QFile _f(sfilename);
+
+	QString sfilename_entropy = QString("./Data/all_buildings_step%1_max%2_entropy.csv").arg(obs.dStepRadius, 0, 'f', 0).arg(obs.dMaxRadius, 0, 'f', 0);
+	QFile _f1(sfilename_entropy);
+
 	if (!_f.open(QIODevice::WriteOnly))
 	{
 		cout << "create output file fail." << endl;
 		return -1;
 	}
 
-	QTextStream _in(&_f);
+	if (!_f1.open(QIODevice::WriteOnly))
+	{
+		cout << "create output entropy file fail." << endl;
+		return -1;
+	}
 
-	//暂不设置obs的中心位置
-	ObservedSphere obs;
-	obs.dCenterHeight = 0.0f;
-	obs.dMaxRadius = 10000.0f;
-	obs.dStepRadius = 100.0f;
+	QTextStream _in(&_f), _in1(&_f1);
+
+	
 
 	_in << "nFID, lat, lon, CenterHeight";
 	double dStepR = obs.dStepRadius;
@@ -53,11 +65,14 @@ int main(int argc, char *argv[])
 		_in << QString(", R%1").arg(dR, 0, 'f', 0);
 	_in << "\r\n";
 
+	_in1 << "nFID, entropy" << endl;
+
 	int nCount = 0;
 	QStringList sHashList = btr.mvHashBuildings.keys();
 	foreach(QString sHa, sHashList) {
-		foreach(Building bd, btr.mvHashBuildings[sHa]) {		
-			cout << "\tCalculating building id = " << bd.nFID << " located in No. "<< nCount+1 << " ..." << endl;
+		foreach(Building bd, btr.mvHashBuildings[sHa]) {
+			if ((nCount+1)%100 == 0)
+				cout << "\tCalculating building id = " << bd.nFID << " located in No. "<< nCount+1 << " ..." << endl;
 
 			obs.dlon = bd.dlon;
 			obs.dlat = bd.dlat;		
@@ -68,12 +83,17 @@ int main(int argc, char *argv[])
 				_in << QString(", %1").arg(val, 0, 'f', 6);
 			_in << "\r\n";
 
+			_in1 << QString("%1, %2").arg(bd.nFID).arg(obs.dEntropy, 0, 'f', 6) << endl;
+
 			nCount++;
 
 		}
 	}
 
 
+	_in1.flush();
+	_f1.flush();
+	_f1.close();
 
 	_in.flush();
 	_f.flush();

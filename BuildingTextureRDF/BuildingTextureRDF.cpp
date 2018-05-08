@@ -232,6 +232,18 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 		obs.vdRdfValues.append(dRdf);
 	}
 
+
+	// º∆À„Ïÿ
+	double dEntropy = 0;
+	foreach(float dval, obs.vdRdfValues)
+	{
+		if (dval < 10e-6)
+			continue;
+		dEntropy += dval*log(dval);
+	}
+	obs.dEntropy = -dEntropy;
+
+
 	return true;
 }
 

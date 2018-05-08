@@ -30,6 +30,7 @@ struct ObservedSphere
 	float dMaxRadius;
 	float dStepRadius;
 	QList<float> vdRdfValues;
+	float dEntropy;
 };
 
 class BuildingTextureRDF
