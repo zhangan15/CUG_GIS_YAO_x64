@@ -7,7 +7,7 @@ using namespace std;
 BuildingTextureRDF::BuildingTextureRDF()
 {
 	mvHashBuildings.clear();
-	mnGeoHashScale = 12;
+	mnGeoHashScale = 8;
 	msHashList.clear();
 }
 
@@ -18,8 +18,8 @@ BuildingTextureRDF::~BuildingTextureRDF()
 	
 }
 
-bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nLatCol, int nLonCol, int nPerFloorAreaCol,\
-	int nFloorCol, int nHeightCol /*= -1*/, double dPerFloorHeight /*= 3.0f*/,\
+bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLatCol, int nLonCol, int nPerFloorAreaCol,\
+	int nFloorCol, int nHeightCol /*= -1*/, int nDemCol, double dPerFloorHeight /*= 3.0f*/,\
 	int nGeoHashScale /*= 8*/)
 {
 	if (nFloorCol < 0 && nHeightCol < 0)
@@ -47,13 +47,14 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nLatCol, int nLon
 
 	// remove titles
 	_in.readLine();
-	int nBuildingCount;
+	int nBuildingCount = 0;
 	while (!_in.atEnd())
 	{
 		QString s = _in.readLine();
 		QStringList slist = s.split(",");
 
 		Building bld;
+		bld.nFID = slist[nFIDCol].trimmed().toLong();
 		bld.dlat = slist[nLatCol].trimmed().toDouble();
 		bld.dlon = slist[nLonCol].trimmed().toDouble();
 		bld.dPerFloorArea = slist[nPerFloorAreaCol].trimmed().toDouble();
@@ -64,11 +65,15 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nLatCol, int nLon
 			bld.dBuildingHeight = slist[nFloorCol].trimmed().toDouble() * dPerFloorHeight;
 
 		bld.dTotalArea = bld.dBuildingHeight * bld.dPerFloorArea;
-		bld.dDemButtom = 0;
+
+		if (nDemCol >= 0)
+			bld.dDemButtom = slist[nDemCol].trimmed().toDouble();
+		else
+			bld.dDemButtom = 0;
 		
 		// change to geohash
 		string sHa = GeoHash::EncodeLatLon(bld.dlat, bld.dlon, mnGeoHashScale);
-		QString sHash = QString::fromStdString(sHa);
+		QString sHash = QString::fromStdString(sHa).toLower();
 
 		//if new buildings
 		if (!mvHashBuildings.contains(sHash))
@@ -78,7 +83,7 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nLatCol, int nLon
 			msHashList.append(sHash);
 		}		
 		
-		mvHashBuildings[sHash].append(bld);
+		mvHashBuildings[sHash].append(bld);		
 		nBuildingCount++;
 
 		if (nBuildingCount % 1000 == 0)
@@ -106,22 +111,37 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 
 	//寻找到球中心的GeoHash
 	string centerHash = GeoHash::EncodeLatLon(obs.dlat, obs.dlon, mnGeoHashScale);
-	QString curHash = QString::fromStdString(centerHash);
+	//QString curHash = QString::fromStdString(centerHash);
 
 	//球中心GeoHash区域生长
 	setAllGeoHashEnable();
 	QStringList enableHashList;
+	enableHashList.clear();
+
+	//暴力遍历, 算法复杂度为O(n)
+	foreach(QString curHash, msHashList)
+	{
+		double dist = GeoHash::distanceBetweenGeoHashes(curHash.toStdString(), centerHash);
+		if (dist <= obs.dMaxRadius)
+			enableHashList.append(curHash);
+	}
+
+	/*
 	QStack<QString> stackHashList;
 	stackHashList.append(curHash);
 	while (!stackHashList.isEmpty())
 	{
 		curHash = stackHashList.pop();	
 		if (!enableHashList.contains(curHash))
-			enableHashList.append(curHash);
+		{
+			if (mvHashBuildings[curHash].size() != 0)
+				enableHashList.append(curHash);
+		}
+			
 
 		double dist = GeoHash::distanceBetweenGeoHashes(curHash.toStdString(), centerHash);
 		string cur_direct[4];
-		if (dist <= obs.dMaxRadius && mvHashEnable[curHash])
+		if (dist <= obs.dMaxRadius)
 		{
 			cur_direct[0] = GeoHash::CalculateAdjacent(curHash.toStdString(), GeoHash::Top);
 			cur_direct[1] = GeoHash::CalculateAdjacent(curHash.toStdString(), GeoHash::Bottom);
@@ -131,15 +151,32 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 			for (int i=0; i<4; i++)
 			{
 				dist = GeoHash::distanceBetweenGeoHashes(cur_direct[i], centerHash);
-				if (dist < obs.dMaxRadius && mvHashEnable[QString::fromStdString(cur_direct[i])])
-					stackHashList.append(QString::fromStdString(cur_direct[i]));
+	
+				//有可能某个邻域内没有数据
+				if (mvHashEnable.contains(QString::fromStdString(cur_direct[i])))
+				{
+					if (dist <= obs.dMaxRadius && mvHashEnable[QString::fromStdString(cur_direct[i])])
+						stackHashList.append(QString::fromStdString(cur_direct[i]));
+				}
+				else
+				{
+					if (dist <= obs.dMaxRadius)
+					{
+						mvHashBuildings.insert(QString::fromStdString(cur_direct[i]), QList<Building>());
+						mvHashEnable.insert(QString::fromStdString(cur_direct[i]), true);
+						msHashList.append(QString::fromStdString(cur_direct[i]));
+						stackHashList.append(QString::fromStdString(cur_direct[i]));						
+					}
+				}
+					
 			}
 
 			mvHashEnable[curHash] = false;
 		}		
 	}
+*/
 
-	cout << "In The Sphere GeoHash Count = " << enableHashList.size() << endl;
+	//cout << "In The Sphere GeoHash Count = " << enableHashList.size() << endl;
 
 	//计算球的体积和建筑物体积
 	//double dSphereVol = 4.0f * PI * obs.dMaxRadius * obs.dMaxRadius * obs.dMaxRadius / 3.0f;
@@ -198,7 +235,8 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 	return true;
 }
 
-bool BuildingTextureRDF::buildingSpaceSizeInSphere(float dlat, float dlon, float dCenterHeight, float dR, Building bd, float& dRatio, float& dSpaceSize)
+bool BuildingTextureRDF::buildingSpaceSizeInSphere(float dlat, float dlon, float dCenterHeight,\
+	float dR, Building bd, float& dRatio, float& dSpaceSize)
 {
 	//计算球心到点的投影距离
 	double dr = getPtsDist(dlat, dlon, bd.dlat, bd.dlon) * 1000.0f; //单位为m
@@ -209,8 +247,9 @@ bool BuildingTextureRDF::buildingSpaceSizeInSphere(float dlat, float dlon, float
 	double z1 = dCenterHeight - dt;
 	double z2 = dCenterHeight + dt;
 
-	z1 = z1 > bd.dDemButtom ? z1 : bd.dDemButtom;
-	z2 = z2 < bd.dBuildingHeight ? z2 : bd.dBuildingHeight;
+	//z1 = z1 > bd.dDemButtom ? z1 : bd.dDemButtom;
+	z1 = z1 > 0.0f ? z1 : 0.0f;
+	z2 = z2 < (bd.dBuildingHeight + bd.dDemButtom) ? z2 : (bd.dBuildingHeight + bd.dDemButtom);
 
 	//
 	if (z2 - z1 <= 0)

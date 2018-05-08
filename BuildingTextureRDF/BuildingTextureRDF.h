@@ -15,6 +15,7 @@
 
 struct Building 
 {
+	long nFID;
 	float dlat, dlon;
 	float dPerFloorArea;
 	float dDemButtom;	//DEM高程
@@ -43,8 +44,8 @@ public:
 	//如果nHeight = -1, 则只考虑Height = nFloor * nPerFloorHeight
 	//如果nFloorCol & nHeight = -1, 返回false
 	//需要输入列数，从0开始计数
-	bool loadBuildingData(char* sfilename, int nLatCol, int nLonCol, int nPerFloorAreaCol, \
-		int nFloorCol = -1, int nHeightCol = -1, double dPerFloorHeight = 3.0f,\
+	bool loadBuildingData(char* sfilename, int nFIDCol, int nLatCol, int nLonCol, int nPerFloorAreaCol, \
+		int nFloorCol = -1, int nHeightCol = -1, int nDemCol = -1, double dPerFloorHeight = 3.0f,\
 		int nGeoHashScale = 8);
 	//计算RDF value
 	bool calculateRdfValues(ObservedSphere& obs);
@@ -61,8 +62,10 @@ private:
 	void setAllGeoHashEnable();
 	double calculateSphereSegmentVol(double dDisHeight, double dR);
 
-protected:
+public:
 	QHash<QString, QList<Building>> mvHashBuildings;	//存储所有地块的Building数据
+
+private:
 	QHash<QString, bool> mvHashEnable;		//设置地块是否允许增长
 	QStringList msHashList;		//GeoHash list
 	int mnGeoHashScale;
