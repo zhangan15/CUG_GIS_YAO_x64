@@ -253,6 +253,19 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 	return true;
 }
 
+bool BuildingTextureRDF::calculateSeveralRfdValues(QList<ObservedSphere>& vObs)
+{
+	int i = 0;
+	for (i = 0; i < vObs.size(); i++)
+	{
+		if ((i+1)%100 == 0)
+			logLn(QString("\t calculating urban RDF valued of No. %1 location ...").arg(i+1));
+		calculateRdfValues(vObs[i]);
+	}
+
+	return true;
+}
+
 bool BuildingTextureRDF::buildingSpaceSizeInSphere(float dlat, float dlon, float dCenterHeight,\
 	float dR, Building bd, float& dRatio, float& dSpaceSize)
 {

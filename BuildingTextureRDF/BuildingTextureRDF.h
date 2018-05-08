@@ -25,6 +25,7 @@ struct Building
 
 struct ObservedSphere
 {
+	long nFID = 0;
 	float dlat, dlon;
 	float dCenterHeight;
 	float dMaxRadius;
@@ -50,6 +51,10 @@ public:
 		int nGeoHashScale = 8);
 	//计算RDF value
 	bool calculateRdfValues(ObservedSphere& obs);
+
+public:
+	//计算若干球形的RDF value
+	bool calculateSeveralRfdValues(QList<ObservedSphere>& vObs);
 
 public:
 	//判断某个建筑物在球体内的面积和百分比
