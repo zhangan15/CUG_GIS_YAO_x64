@@ -148,7 +148,7 @@ bool loadImageScoresFromFile(char* sFeatureFilename, char* sScoreFilename, int& 
 
 int main(int argc, char *argv[])
 {
-	char* sFeatureFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\features_total.csv";
+	char* sFeatureFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\features.csv";
 	char* sRatedFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\auto_save_scores.csv";
 	char* slogFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\training.rfa";
 	char* sOutputFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\total_sim_scores.csv";
