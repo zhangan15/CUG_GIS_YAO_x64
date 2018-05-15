@@ -227,6 +227,75 @@ void SemanticSegImage(anet_type& net, char* sInputImgName, char* sOutputImgName_
 
 }
 
+bool StatisticFolder(anet_type& net, char* folder_name, char* output_csv)
+{
+	//创建输出文件文件夹
+	QString output_dir_path = QString("%1/%2").arg(folder_name).arg("seg_files");
+	QDir dir(output_dir_path);
+	if (!dir.exists())
+		dir.mkdir(output_dir_path);
+
+	//获取文件夹中的所有图像jpg, png, tif
+	QStringList filters;
+	filters << QString("*.jpeg") << QString("*.jpg") << QString("*.png") << QString("*.tiff") << QString("*.tif") << QString("*.gif") << QString("*.bmp");
+	QFileInfoList filist = QDir(folder_name).entryInfoList(filters);
+	cout << "Input Image Files = " << filist.size();
+
+	//
+	QFile _f(output_csv);
+	if (!_f.open(QIODevice::WriteOnly))
+	{
+		cout << "create output file fail." << endl;
+		return false;
+	}
+	QTextStream _in(&_f);
+
+	//Input title
+	QString smsg = "filename";
+	for (int i = 0; i < MAX_LABEL_COUNT; i++)
+		smsg += QString(", Id_%1").arg(i);
+	_in << smsg << "\r\n";
+
+	//逐个输入文件，输出的文件放入输出路径中，png格式
+	long* pPixel = new long[MAX_LABEL_COUNT];
+	double* pProb = new double[MAX_LABEL_COUNT];
+
+	foreach(QFileInfo fi, filist)
+	{
+		cout << "processing " << fi.absoluteFilePath().toLocal8Bit().data() << " ..." << endl;
+		try
+		{
+			QString output_filename = QString("%1/%2_seg.png").arg(output_dir_path).arg(fi.completeBaseName());
+			SemanticSegImage(net, fi.absoluteFilePath().toLocal8Bit().data(), output_filename.toLocal8Bit().data(), pPixel, pProb);
+
+			//存储概率
+			smsg = fi.completeBaseName();
+			for (int i = 0; i < MAX_LABEL_COUNT; i++)
+				smsg += QString(", %1").arg(pProb[i], 0, 'f', 9);
+			_in << smsg << "\r\n";
+			_in.flush();
+
+			cout << "processed " << fi.absoluteFilePath().toLocal8Bit().data() << " success." << endl;
+		}
+		catch (std::exception& e)
+		{
+			cout << "processed " << fi.absoluteFilePath().toLocal8Bit().data() << " fail." << endl;
+			continue;
+		}
+		
+	}
+
+	_in.flush();
+	_f.flush();
+	_f.close();
+
+	//release memory
+	delete[]pPixel;
+	delete[]pProb;
+
+	return true;
+}
+
 
 
 int main(int argc, char** argv) try
@@ -235,6 +304,9 @@ int main(int argc, char** argv) try
 	deserialize("./semantic_segmentation_ADE20K_net.dnn") >> net;
 	cout << "load net success." << endl;
 
+	StatisticFolder(net, "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll", "E:\\Data\\streetview_photos_Haizhu\\object_features.csv");
+
+	/*
 	QString inputFileName = "./data_jpg/test.jpg";
 
 	//load image
@@ -271,6 +343,7 @@ int main(int argc, char** argv) try
 
 	delete[]pPixel;
 	delete[]pProb;
+	*/
 	
 	return 0;
 }
