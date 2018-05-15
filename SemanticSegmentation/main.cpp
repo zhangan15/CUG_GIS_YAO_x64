@@ -8,6 +8,8 @@
 using namespace std;
 using namespace dlib;
 
+#define MAX_LABEL_COUNT 151
+
 // ----------------------------------------------------------------------------------------
 
 // The PASCAL VOC2012 dataset contains 20 ground-truth classes + background.  Each class
@@ -171,13 +173,69 @@ uint16_t SementicSegImage(anet_type& net, matrix<rgb_pixel> input_image, matrix<
 	return classlabel;
 }
 
+//save the image ground object prob. to array
+void SemanticSegImage(anet_type& net, char* sInputImgName, char* sOutputImgName_png, long*& pPixelArr, double*& pProbArr)
+{
+	matrix<rgb_pixel> input_image;
+	matrix<uint16_t> index_label_image;
+	load_image(input_image, sInputImgName);
+
+	const matrix<uint16_t> temp = net(input_image);
+
+	// Crop the returned image to be exactly the same size as the input.
+	const chip_details chip_details(
+		centered_rect(temp.nc() / 2, temp.nr() / 2, input_image.nc(), input_image.nr()),
+		chip_dims(input_image.nr(), input_image.nc())
+	);
+	extract_image_chip(temp, chip_details, index_label_image);
+
+	dlib::save_png(index_label_image, sOutputImgName_png);
+
+	//
+	for (int i = 0; i < MAX_LABEL_COUNT; i++)
+	{
+		pPixelArr[i] = 0;
+		pProbArr[i] = 0.0f;
+	}
+
+	long nSumPixelCount = 0;
+
+	//statistic
+	const long nr = index_label_image.nr();
+	const long nc = index_label_image.nc();
+
+	std::vector<unsigned int> counters(class_count);
+
+	for (long r = 0; r < nr; ++r)
+	{
+		for (long c = 0; c < nc; ++c)
+		{
+			const uint16_t label = index_label_image(r, c);
+			if (label < 0 || label > MAX_LABEL_COUNT-1) continue;
+			pPixelArr[label]++;
+			nSumPixelCount++;
+		}
+	}
+
+
+	for (int i = 0; i < MAX_LABEL_COUNT; i++)
+	{
+		pProbArr[i] = (double)pPixelArr[i] / (double)nSumPixelCount;
+	}
+	
+
+
+}
+
+
+
 int main(int argc, char** argv) try
 {
 	anet_type net;
-	deserialize("./semantic_segmentation_ADE20K_batch2_Window5_net.dnn") >> net;
+	deserialize("./semantic_segmentation_ADE20K_net.dnn") >> net;
 	cout << "load net success." << endl;
 
-	QString inputFileName = "./data_jpg/113.223719_23.108423_0.png";
+	QString inputFileName = "./data_jpg/test.jpg";
 
 	//load image
 	matrix<rgb_pixel> input_image;
@@ -193,6 +251,26 @@ int main(int argc, char** argv) try
 	QFileInfo fi(inputFileName);
 	QString pngfilename = QString("%1/%2_label.png").arg(fi.absolutePath()).arg(fi.completeBaseName());
 	dlib::save_png(index_label_image, pngfilename.toLocal8Bit().data());
+
+	//test statistic
+	long* pPixel = new long[MAX_LABEL_COUNT];
+	double* pProb = new double[MAX_LABEL_COUNT];
+	SemanticSegImage(net, inputFileName.toLocal8Bit().data(), pngfilename.toLocal8Bit().data(), pPixel, pProb);
+
+	std::vector<std::string> sName;
+	for (int i = 0; i < MAX_LABEL_COUNT; i++)
+		sName.push_back(find_type(i));
+
+	for (int i = 0; i < MAX_LABEL_COUNT; i++)
+	{
+		if (pProb[i] <= 10e-6)
+			continue;
+		cout << "Prob = " << pProb[i] << " : " << sName[i] << endl;
+	}
+	
+
+	delete[]pPixel;
+	delete[]pProb;
 	
 	return 0;
 }
