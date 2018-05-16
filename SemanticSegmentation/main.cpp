@@ -239,7 +239,7 @@ bool StatisticFolder(anet_type& net, char* folder_name, char* output_csv)
 	QStringList filters;
 	filters << QString("*.jpeg") << QString("*.jpg") << QString("*.png") << QString("*.tiff") << QString("*.tif") << QString("*.gif") << QString("*.bmp");
 	QFileInfoList filist = QDir(folder_name).entryInfoList(filters);
-	cout << "Input Image Files = " << filist.size();
+	cout << "Input Image Files = " << filist.size() << endl;
 
 	//
 	QFile _f(output_csv);
@@ -260,9 +260,11 @@ bool StatisticFolder(anet_type& net, char* folder_name, char* output_csv)
 	long* pPixel = new long[MAX_LABEL_COUNT];
 	double* pProb = new double[MAX_LABEL_COUNT];
 
+	int nCount = 0;
 	foreach(QFileInfo fi, filist)
 	{
-		cout << "processing " << fi.absoluteFilePath().toLocal8Bit().data() << " ..." << endl;
+		
+		cout << "processing No. "<< nCount << " file: " << fi.completeBaseName().toLocal8Bit().data() << " ..." << endl;
 		try
 		{
 			QString output_filename = QString("%1/%2_seg.png").arg(output_dir_path).arg(fi.completeBaseName());
@@ -275,11 +277,13 @@ bool StatisticFolder(anet_type& net, char* folder_name, char* output_csv)
 			_in << smsg << "\r\n";
 			_in.flush();
 
-			cout << "processed " << fi.absoluteFilePath().toLocal8Bit().data() << " success." << endl;
+			cout << "processed " << fi.completeBaseName().toLocal8Bit().data() << " success." << endl;
+			nCount++;
 		}
 		catch (std::exception& e)
 		{
-			cout << "processed " << fi.absoluteFilePath().toLocal8Bit().data() << " fail." << endl;
+			cout << "processed " << fi.completeBaseName().toLocal8Bit().data() << " fail." << endl;
+			nCount++;
 			continue;
 		}
 		
@@ -296,23 +300,12 @@ bool StatisticFolder(anet_type& net, char* folder_name, char* output_csv)
 	return true;
 }
 
-
-
-int main(int argc, char** argv) try
+void test(QString inputFileName)
 {
 	anet_type net;
 	deserialize("./semantic_segmentation_ADE20K_net.dnn") >> net;
 	cout << "load net success." << endl;
 
-// 	dlib::net_to_xml(net, "./semantic_segmentation_ADE20K_net_caffe.xml");
-// 	return 0;
-
-	StatisticFolder(net, "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll", "E:\\Data\\streetview_photos_Haizhu\\object_features.csv");
-
-	/*
-	QString inputFileName = "./data_jpg/test.jpg";
-
-	//load image
 	matrix<rgb_pixel> input_image;
 	matrix<uint16_t> index_label_image;
 	load_image(input_image, inputFileName.toLocal8Bit().data());
@@ -321,7 +314,7 @@ int main(int argc, char** argv) try
 	//输出到index_label_img
 	SementicSegImage(net, input_image, index_label_image);
 	cout << index_label_image.nr() << " * " << index_label_image.nc() << endl;
-	
+
 	//save png
 	QFileInfo fi(inputFileName);
 	QString pngfilename = QString("%1/%2_label.png").arg(fi.absolutePath()).arg(fi.completeBaseName());
@@ -332,6 +325,11 @@ int main(int argc, char** argv) try
 	double* pProb = new double[MAX_LABEL_COUNT];
 	SemanticSegImage(net, inputFileName.toLocal8Bit().data(), pngfilename.toLocal8Bit().data(), pPixel, pProb);
 
+	//输出到index_label_img
+	SementicSegImage(net, input_image, index_label_image);
+	cout << index_label_image.nr() << " * " << index_label_image.nc() << endl;
+
+	//输出到界面
 	std::vector<std::string> sName;
 	for (int i = 0; i < MAX_LABEL_COUNT; i++)
 		sName.push_back(find_type(i));
@@ -342,11 +340,38 @@ int main(int argc, char** argv) try
 			continue;
 		cout << "Prob = " << pProb[i] << " : " << sName[i] << endl;
 	}
-	
+
 
 	delete[]pPixel;
-	delete[]pProb;
-	*/
+	delete[]pProb; 
+}
+
+int main(int argc, char** argv) try
+{
+	if (argc < 4)
+	{
+		cout << "Please input like this:" << endl;
+		cout << "\t./SemanticSegmentation.exe INPUT_DNN_FILE_NAME INPUT_IMAGES_FOLDER OUTPUT_FEATURE_CSV_PATH" << endl;
+		cout << "Example:" << endl;
+		cout << "\t ./SemanticSegmentation.exe ./my_own_dnn.dnn ./images ./features.csv" << endl;
+		return -1;
+	}
+
+	char input_dnn_file[2048], input_image_folder[2048], output_feature_csv[2048];
+	strcpy(input_dnn_file, argv[1]);
+	strcpy(input_image_folder, argv[2]);
+	strcpy(output_feature_csv, argv[3]);
+
+	cout << "INPUT DNN FILE: " << input_dnn_file << endl;
+	cout << "INPUT IMAGE FOLDER: " << input_image_folder << endl;
+	cout << "OUTPUT FEATURE PATH: " << output_feature_csv << endl;
+
+
+	anet_type net;
+	deserialize(input_dnn_file) >> net;
+	cout << "LOAD NET SUCCESS." << endl;
+	
+	StatisticFolder(net, input_image_folder, output_feature_csv);
 	
 	return 0;
 }
