@@ -82,6 +82,12 @@ void LoadFeatureThread::run()
 			break;
 	}
 
+	//
+	mpApp->mvImgNameHash.clear();
+	for (int i = 0; i < mpApp->mvImgScores.size(); i++)
+		mpApp->mvImgNameHash.insert(QFileInfo(mpApp->mvImgScores[i].sfilename).completeBaseName().trimmed().toLower(), i);
+	
+
 	//load rated images
 	if (QFile::exists(mpApp->msCurDir + "./auto_save_scores.csv"))
 	{
@@ -98,15 +104,16 @@ void LoadFeatureThread::run()
 				QString s = _in.readLine();
 				QStringList slist = s.split(",");
 
-// 				int nIdx = -1;
-// 				if (mpApp->mvImgNameHash.contains(sCurName))
-// 					nIdx = mpApp->mvImgNameHash[sCurName];
-// 				else
-// 					continue;
+				QString sCurName = slist[0].trimmed().toLower();
+				int nIdx = -1;
+				if (mpApp->mvImgNameHash.contains(sCurName))
+					nIdx = mpApp->mvImgNameHash[sCurName];
+				else
+					continue;
 				
 
-				int nIdx = mpApp->mvImgScores.indexOf(IMAGE_SCORE(slist[0]));
-				if (nIdx < 0)	continue;
+// 				int nIdx = mpApp->mvImgScores.indexOf(IMAGE_SCORE(slist[0]));
+// 				if (nIdx < 0)	continue;
 
 				mpApp->mvImgScores[nIdx].nScore = slist[1].trimmed().toDouble();
 				mpApp->mvScoredImg.append(mpApp->mvImgScores[nIdx]);
