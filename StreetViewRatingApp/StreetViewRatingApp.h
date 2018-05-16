@@ -5,6 +5,7 @@
 
 #include <QString>
 #include <QList>
+#include <QHash>
 
 #include "alglib/statistics.h"
 #include "alglib/dataanalysis.h"
@@ -57,6 +58,7 @@ public:
 	Ui::StreetViewRatingAppClass ui;
 	QList<IMAGE_SCORE> mvImgScores;
 	QList<IMAGE_SCORE> mvScoredImg;
+	QHash<QString, long> mvImgNameHash;
 	int mnCurID;
 	QString msCurDir;
 

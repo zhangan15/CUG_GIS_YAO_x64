@@ -320,6 +320,8 @@ __pycache__/
 *.nvuser
 *.ppm
 *.exe
+*.xml
+*.zip
 
 thirdlib/
 alglib/

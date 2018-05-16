@@ -40,8 +40,16 @@ void LoadFeatureThread::run()
 			if (slist.size() != mpApp->mnFeatureDimension + 1)
 				continue;
 
-			int nIdx = mpApp->mvImgScores.indexOf(IMAGE_SCORE(slist[0]));
-			if (nIdx < 0)	continue;
+			//int nIdx = mpApp->mvImgScores.indexOf(IMAGE_SCORE(slist[0]));
+			//if (nIdx < 0)	continue;
+
+			QString sCurName = slist[0].trimmed().toLower();//QFileInfo(slist[0]).completeBaseName().trimmed().toLower();
+
+			int nIdx = -1;
+			if (mpApp->mvImgNameHash.contains(sCurName))
+				nIdx = mpApp->mvImgNameHash[sCurName];
+			else
+				continue;
 
 
 			mpApp->mvImgScores[nIdx].vFeatures.clear();
@@ -89,6 +97,13 @@ void LoadFeatureThread::run()
 				nCount++;
 				QString s = _in.readLine();
 				QStringList slist = s.split(",");
+
+// 				int nIdx = -1;
+// 				if (mpApp->mvImgNameHash.contains(sCurName))
+// 					nIdx = mpApp->mvImgNameHash[sCurName];
+// 				else
+// 					continue;
+				
 
 				int nIdx = mpApp->mvImgScores.indexOf(IMAGE_SCORE(slist[0]));
 				if (nIdx < 0)	continue;

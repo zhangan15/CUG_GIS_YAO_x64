@@ -85,12 +85,16 @@ void StreetViewRatingApp::openDir()
 	//save msg to the file list
 	mvImgScores.clear();
 	mvScoredImg.clear();
+	mvImgNameHash.clear();
+	int nCurID = 0;
 	foreach(QFileInfo fi, filist)
 	{
 		IMAGE_SCORE imgSr;
 		imgSr.sfilename = fi.absoluteFilePath();
 		imgSr.nScore = -1;
 		mvImgScores.append(imgSr);
+		mvImgNameHash.insert(QFileInfo(imgSr.sfilename).completeBaseName().trimmed().toLower(), nCurID);
+		nCurID++;
 	}
 
 	if (!QFile::exists(dir + "./features.csv"))

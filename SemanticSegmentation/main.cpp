@@ -304,6 +304,9 @@ int main(int argc, char** argv) try
 	deserialize("./semantic_segmentation_ADE20K_net.dnn") >> net;
 	cout << "load net success." << endl;
 
+// 	dlib::net_to_xml(net, "./semantic_segmentation_ADE20K_net_caffe.xml");
+// 	return 0;
+
 	StatisticFolder(net, "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll", "E:\\Data\\streetview_photos_Haizhu\\object_features.csv");
 
 	/*
