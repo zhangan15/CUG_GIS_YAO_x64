@@ -3,6 +3,7 @@
 #include "alglib/statistics.h"
 #include "alglib/dataanalysis.h"
 #include "alglib/alglibmisc.h"
+#include "RFWeights.h"
 using namespace std;
 using namespace alglib;
 
@@ -205,6 +206,9 @@ int main(int argc, char *argv[])
 		_in << QString("RFA OOB AVG REL CLS ERROR = %1").arg(RfReport.oobrelclserror, 0, 'f', 6) << "\r\n";
 		_in << QString("RFA OOB RMSE ERROR = %1").arg(RfReport.oobrmserror, 0, 'f', 6) << "\r\n";
 
+		_in << "******" << "\r\n";
+		//计算训练权重
+
 		std::string sRFStructure;
 		alglib::dfserialize(RfFitter, sRFStructure);
 		_in << "Current RF Structure: " << "\r\n";
@@ -218,6 +222,8 @@ int main(int argc, char *argv[])
 	_f.close();
 
 	cout << "The predictor has been trained success." << endl;
+
+	//训练权重写入文件
 
 
 	//预测分数，写入

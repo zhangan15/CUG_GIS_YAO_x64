@@ -214,10 +214,10 @@ int main(int argc,char **args) {
    
   color_image_t *im = NULL;//Random_produce_ppm(width, height);
 
-  QFileInfoList filist = QDir("E:/Data/streetview_photos_Haizhu/streetview_photos_ll").entryInfoList(QStringList(QString("*.png")));
+  QFileInfoList filist = QDir("H:\\WuhanStreetview\\wuhanStreetPhoto\\").entryInfoList(QStringList(QString("*.png")));
   cout << "file size = " << filist.size() << endl;
 
-  QFile outfile("./image_info_gist.csv");
+  QFile outfile("H:\\WuhanStreetview\\Wwuhan_gist_features.csv");
   outfile.open(QIODevice::WriteOnly);
   QTextStream _in(&outfile);
 
