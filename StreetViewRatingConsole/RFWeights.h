@@ -16,6 +16,6 @@ namespace CRFWeights
 {
 // 	bool calRFWeights_CLASS(alglib::real_2d_array dataset, alglib::decisionforest *pDF, alglib::real_1d_array RFWeights);
 // 	bool calRFWeights_INTER(alglib::real_2d_array dataset, alglib::decisionforest *pDF, alglib::real_1d_array RFWeights);
-	bool calRFWeights(alglib::real_2d_array dataset, alglib::decisionforest *pDF, alglib::real_1d_array& RFWeights, int rf_type=0);
+	bool calRFWeights(alglib::real_2d_array dataset, alglib::decisionforest *pDF, alglib::real_1d_array& RFWeights, int rf_type);
 };
 #endif

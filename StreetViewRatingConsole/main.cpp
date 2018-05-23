@@ -4,6 +4,7 @@
 #include "alglib/dataanalysis.h"
 #include "alglib/alglibmisc.h"
 #include "RFWeights.h"
+#include "WebCoordSystemTransform.h"
 using namespace std;
 using namespace alglib;
 
@@ -149,10 +150,10 @@ bool loadImageScoresFromFile(char* sFeatureFilename, char* sScoreFilename, int& 
 
 int main(int argc, char *argv[])
 {
-	char* sFeatureFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\features.csv";
-	char* sRatedFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\auto_save_scores.csv";
-	char* slogFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\training.rfa";
-	char* sOutputFilename = "E:\\Data\\streetview_photos_Haizhu\\streetview_photos_ll\\total_sim_scores.csv";
+	char* sFeatureFilename = "H:\\WuhanStreetview\\object_features.csv";
+	char* sRatedFilename = "H:\\WuhanStreetview\\scores\\auto_save_scores_wealthy.csv";
+	char* slogFilename = "H:\\WuhanStreetview\\object_total_scores\\training_wealthy.rfa";
+	char* sOutputFilename = "H:\\WuhanStreetview\\object_total_scores\\total_sim_scores_wealthy.csv";
 
 	QList<IMAGE_SCORE> vTotalImageScores;
 	QList<IMAGE_SCORE> vRatedImageScores;
@@ -207,8 +208,25 @@ int main(int argc, char *argv[])
 		_in << QString("RFA OOB RMSE ERROR = %1").arg(RfReport.oobrmserror, 0, 'f', 6) << "\r\n";
 
 		_in << "******" << "\r\n";
+		
 		//¼ÆËãÑµÁ·È¨ÖØ
+		cout << "calculating weights of spatial variables..." << endl;
+		alglib::real_1d_array RFWeights;
+		RFWeights.setlength(nFeatureDimension);
+		CRFWeights::calRFWeights(arr, &RfFitter, RFWeights, RF_INTER);
+		cout << "calculated weights done." << endl;
 
+		//
+		_in << "Variable Weights:" << "\r\n";
+		for (int i = 0; i < nFeatureDimension; i++) {
+			QString _s = QString("%1, %2").arg(i).arg(RFWeights[i], 0, 'f', 9);
+			_in << _s << "\r\n";
+		}
+		
+
+		_in.flush();
+
+		_in << "******" << "\r\n";
 		std::string sRFStructure;
 		alglib::dfserialize(RfFitter, sRFStructure);
 		_in << "Current RF Structure: " << "\r\n";
@@ -335,13 +353,19 @@ int main(int argc, char *argv[])
 		return -3;
 	}
 	QTextStream _in0(&ofile);
-	_in0 << "lon, lat, 0, 90, 180, 270, MAX_SCORES, MIN_SCORES, AVG_SCORES" << "\r\n";
+	_in0 << "gcj_lon, gcj_lat, wgs_lon, wgs_lat, 0, 90, 180, 270, MAX_SCORES, MIN_SCORES, AVG_SCORES" << "\r\n";
+
+	
 
 	nCount = 0;
 	foreach(POS_SCORE ps, pos_scores)
 	{
-		QString s = QString("%1, %2, %3, %4, %5, %6, %7, %8, %9")\
-			.arg(ps.mdLon, 0, 'f', 6).arg(ps.mdLat, 0, 'f', 6).arg(ps.mpDirection[0], 0, 'f', 6)\
+		double wgs_lat, wgs_lon;
+		WEBCSTRANSFORM::gcj2wgs(ps.mdLat, ps.mdLon, wgs_lat, wgs_lon);
+
+		QString s = QString("%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11")\
+			.arg(ps.mdLon, 0, 'f', 6).arg(ps.mdLat, 0, 'f', 6)\
+			.arg(wgs_lon, 0, 'f', 6).arg(wgs_lat, 0, 'f', 6).arg(ps.mpDirection[0], 0, 'f', 6)\
 			.arg(ps.mpDirection[1], 0, 'f', 6).arg(ps.mpDirection[2], 0, 'f', 6).arg(ps.mpDirection[3], 0, 'f', 6)\
 			.arg(ps.mdMax, 0, 'f', 6).arg(ps.mdMin, 0, 'f', 6).arg(ps.mdAve, 0, 'f', 6);
 

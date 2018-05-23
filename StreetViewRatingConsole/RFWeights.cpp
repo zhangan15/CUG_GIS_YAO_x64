@@ -12,6 +12,7 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 {
 	//////////////////////////ÎÄ¼þÂ·¾¶/////////////////////////////////////
 	//QString filename = "../Weights.csv";
+	RFWeights.setlength(dataset.cols()-1);
 	real_1d_array _calRFWeights;
 	real_2d_array testarr;
 	testarr.setlength(dataset.rows(),dataset.cols());
@@ -38,7 +39,7 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 		for (int i=0; i<testarr.rows(); i++)
 		{
 			real_1d_array prearr;
-			prearr.setlength(testarr.cols());
+			prearr.setlength(testarr.cols()-1);
 
 			for (j=0; j<testarr.cols()-1; j++)
 			{
@@ -119,7 +120,7 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 			double _dcount = dcount[i];
 			stdgy = _dcount/_nSum;
 			_calRFWeights[i] = stdgy;
-			cout<<setprecision(3)<<stdgy<<"\t";
+			//cout<<setprecision(3)<<stdgy<<"\t";
 		}
 
 		for (i=0;i<testarr.cols();i++)
@@ -127,7 +128,7 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 			RFWeights[i] = _calRFWeights[i];
 		}
 
-		cout<<endl;
+		//cout<<endl;
 
 		delete [] dcount;
 	}
@@ -135,15 +136,15 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////
 		real_1d_array dst;
-		int j;  
+		int i,j,k;  
 		int ncount = 0;
 		double daccurcy = 0;
 		double dchangeerr = 0;
-		double dresulterr=0;
-		for (int i=0; i<testarr.rows(); i++)
+		//double dresulterr=0;
+		for (i=0; i<testarr.rows(); i++)
 		{
 			real_1d_array prearr;
-			prearr.setlength(testarr.cols());
+			prearr.setlength(testarr.cols()-1);
 
 			for (j=0; j<testarr.cols()-1; j++)
 			{
@@ -151,74 +152,131 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 			}
 
 			dfprocess(*_pDF, prearr, dst);
-			dchangeerr+=sqrt(pow(dst[0]-testarr[i][24],2));
-			if (i==testarr.rows()-1)
-			{
-				dresulterr = dchangeerr;
-				cout<<dresulterr<<endl;
-			}
+
+			double val0 = dst[0];
+			double val1 = dataset[i][dataset.cols()-1];
+
+// 			if (i == 1603)
+// 			{
+// 				cout<<"wait"<<endl;
+// 			}
+
+			dchangeerr+=sqrt((val0-val1)*(val0-val1));
+
+//			cout<<i<<"  =   "<<dchangeerr<<endl;
+// 			if (i==testarr.rows()-1)
+// 			{
+// 				dresulterr = dchangeerr;
+// 				cout<<dresulterr<<endl;
+// 			}
 
 		}
 		//////////////////////////////////Ô¤²â//////////////////////////////////////
 
-		double* dErrRst = new double [testarr.cols()];
+		//double* dErrRst = new double [testarr.cols()];
 		real_1d_array ndst;
 		double dchange_errarr = 0;
 		real_1d_array _change_errarr;
 		double max = 0;
 		double min = 0;
-		_change_errarr.setlength(testarr.cols());
-		for (int j = 0;j<testarr.cols()-1;j++)
+		_change_errarr.setlength(dataset.cols() - 1);
+
+		real_1d_array max_var, min_var;
+		max_var.setlength(dataset.cols() - 1);
+		min_var.setlength(dataset.cols() - 1);
+
+		qsrand(QTime::currentTime().msec());
+
+		for (i=0; i<dataset.cols()-1; i++)
 		{
+			max_var[i] = dataset[0][i];
+			min_var[i] = dataset[0][i];
 
-			dchange_errarr =0;
-			for (int i=0;i<testarr.rows();i++)
+			for (j=0; j<dataset.rows(); j++)
 			{
+				if (dataset[j][i] > max_var[i])
+					max_var[i] = dataset[j][i];
+				if (dataset[j][i] < min_var[i])
+					min_var[i] = dataset[j][i];
+			}
+		}
 
-				real_1d_array changearr;
-				changearr.setlength(testarr.cols());
-				for (int k=0; k<=testarr.cols()-1; k++)
+		real_1d_array prearray;
+		prearray.setlength(dataset.cols() - 1);
+
+		for (k=0; k<dataset.cols() - 1; k++)
+		{
+			//cout<<"calculating No. "<<k+1<<" / "<<dataset.cols()-1<<endl;
+			dchange_errarr = 0;
+			for (i=0; i<dataset.rows(); i++)
+			{
+				for (j=0; j<dataset.cols()-1; j++)
 				{
-					max= 0;
-					changearr[k] = testarr[i][k];
-					min = changearr[0];
-					for (int _p=0;_p<testarr.rows();_p++)
-					{	   
-						if(max<changearr[_p])
-						{
-							max=changearr[_p];
-						}
-
-					}
-					for (int _p=0;_p<testarr.rows();_p++)
-					{	   
-						if(min>changearr[_p])
-						{
-							min=changearr[_p];
-						}
-
-					}
-					changearr[j]=min+(double)max*rand()/((double)RAND_MAX+1);
+					prearray[j] = dataset[i][j];
+					prearray[k] += (double)pow((double)-1.0f, (double)qrand())*(min_var[k]+(double)max_var[k]*qrand()/((double)RAND_MAX+1));
+					//prearray[k] = 0;
 				}
 
-				dfprocess(*pDF, changearr, ndst);
-
-				dchange_errarr+=sqrt((pow(abs(ndst[0]-testarr[i][24]),2)));
-
-				if (i==testarr.rows()-1)
-				{   
-					_change_errarr[j] = (dchange_errarr - dchangeerr)/50;
-					cout<<"*********"<<dchange_errarr<<endl;
-				}
-
-
+				dfprocess(*pDF, prearray, ndst);
+				dchange_errarr+=sqrt((pow(abs(ndst[0]-dataset[i][dataset.cols()-1]),2)));
 			}
 
+			
+			_change_errarr[k] = abs(dchange_errarr - dchangeerr);
+
 		}
-		for (int i=0;i<testarr.cols()-1;i++)
-		{
-			cout<<setprecision(8)<<_change_errarr[i]<<endl;
-		}
+		
+
+// 		for (int j = 0;j<testarr.cols()-1;j++)
+// 		{
+// 
+// 			dchange_errarr =0;
+// 			for (int i=0;i<testarr.rows();i++)
+// 			{
+// 
+// 				real_1d_array changearr;
+// 				changearr.setlength(testarr.cols()-1);
+// 				for (int k=0; k<=testarr.cols()-1; k++)
+// 				{
+// 					max= changearr[0];
+// 					changearr[k] = testarr[i][k];
+// 					min = changearr[0];
+// 					for (int _p=0;_p<testarr.rows();_p++)
+// 					{	   
+// 						if(max<testarr[_p][k])
+// 						{
+// 							max=testarr[_p][k];
+// 						}
+// 
+// 						if(min>testarr[_p][k])
+// 						{
+// 							min=testarr[_p][k];
+// 						}
+// 
+// 					}
+// 
+// 					changearr[k]= min+(double)max*rand()/((double)RAND_MAX+1);
+// 				}
+// 
+// 				dfprocess(*pDF, changearr, ndst);
+// 
+// 				dchange_errarr+=sqrt((pow(abs(ndst[0]-dataset[i][dataset.cols()-1]),2)));
+// 
+// 				if (i==testarr.rows()-1)
+// 				{   
+// 					_change_errarr[j] = (dchange_errarr - dchangeerr)/50;
+// 					//cout<<"*********"<<dchange_errarr<<endl;
+// 				}
+// 
+// 
+// 			}
+// 
+// 		}
+
+
+
+
+
 		int _nSum = 0;
 		double stdgy = 0;
 		for (int i=0;i<testarr.cols()-1;i++)
@@ -233,11 +291,11 @@ bool CRFWeights::calRFWeights(real_2d_array dataset, decisionforest *pDF, real_1
 		{
 			double _dcount = _change_errarr[i];
 			stdgy = _dcount/_nSum;
-			cout<<setprecision(3)<<stdgy<<"\t";
-			// QString _str = QString("%1,%2").arg(stdgy).arg("\t");
-			//txtoutput<<_str;
+			 //cout<<i<<" = "<<stdgy<<endl;
+
+			RFWeights[i] = stdgy;
 		}
-		cout<<endl;
+		//cout<<endl;
 	}
 	return true;
 }
