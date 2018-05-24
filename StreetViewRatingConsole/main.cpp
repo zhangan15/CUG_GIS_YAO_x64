@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 
 	cout << "The predictor has been trained success." << endl;
 
-	//训练权重写入文件
+	//TODO: 读入其他特征集，重设vTotalImageScores
 
 
 	//预测分数，写入
