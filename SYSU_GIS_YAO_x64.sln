@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LatLon2GeoHash", "LatLon2Ge
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildingTextureRDF", "BuildingTextureRDF\BuildingTextureRDF.vcxproj", "{7AE0CD3A-7A38-47D2-89BA-CB66B2881A0B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thulac", "thulac\thulac.vcxproj", "{A7A005B5-A041-40DF-B905-B489C43F2318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -159,6 +161,14 @@ Global
 		{7AE0CD3A-7A38-47D2-89BA-CB66B2881A0B}.Release|x64.ActiveCfg = Release|x64
 		{7AE0CD3A-7A38-47D2-89BA-CB66B2881A0B}.Release|x64.Build.0 = Release|x64
 		{7AE0CD3A-7A38-47D2-89BA-CB66B2881A0B}.Release|x86.ActiveCfg = Release|x64
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Debug|x64.ActiveCfg = Debug|x64
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Debug|x64.Build.0 = Debug|x64
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Debug|x86.ActiveCfg = Debug|Win32
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Debug|x86.Build.0 = Debug|Win32
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x64.ActiveCfg = Release|x64
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x64.Build.0 = Release|x64
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x86.ActiveCfg = Release|Win32
+		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
