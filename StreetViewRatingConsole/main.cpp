@@ -204,11 +204,12 @@ bool loadImageScoresFromFile(char* sFeatureFilename, char* sScoreFilename, int& 
 
 int CalculateScoresByOtherAreaScores()
 {
+	//beautiful, boring, depressing, lively, safety, wealthy
 	char* sTrainingFeatureFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_features.csv";
-	char* sTrainingRatedFilename = "H:\\StreetviewFolder\\WuhanStreetview\\scores\\auto_save_scores_wealthy.csv";
-	char* sPredictFeatureFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_features.csv";
-	char* slogFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_total_scores\\test\\training_wealthy.rfa";
-	char* sOutputFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_total_scores\\test\\total_sim_scores_wealthy.csv";
+	char* sTrainingRatedFilename = "H:\\StreetviewFolder\\WuhanStreetview\\scores\\auto_save_scores_beautiful.csv";
+	char* sPredictFeatureFilename = "H:\\StreetviewFolder\\guangzhoustreetview\\features\\object_features.csv";
+	char* slogFilename = "H:\\StreetviewFolder\\guangzhoustreetview\\scores\\training_beautiful.rfa";
+	char* sOutputFilename = "H:\\StreetviewFolder\\guangzhoustreetview\\scores\\total_sim_scores_beautiful.csv";
 	
 
 	QList<IMAGE_SCORE> vTotalImageScores;
