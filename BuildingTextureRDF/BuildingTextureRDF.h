@@ -47,8 +47,8 @@ public:
 	//如果nFloorCol & nHeight = -1, 返回false
 	//需要输入列数，从0开始计数
 	bool loadBuildingData(char* sfilename, int nFIDCol, int nLatCol, int nLonCol, int nPerFloorAreaCol, \
-		int nFloorCol = -1, int nHeightCol = -1, int nDemCol = -1, double dPerFloorHeight = 3.0f,\
-		int nGeoHashScale = 8);
+		int nFloorCol = -1, int nHeightCol = -1, int nDemCol = -1, double dPerFloorHeight = 3.0f, \
+		int nGeoHashScale = 8, bool bIsNormal = true);
 	//计算RDF value
 	bool calculateRdfValues(ObservedSphere& obs);
 
@@ -76,6 +76,7 @@ private:
 	QHash<QString, bool> mvHashEnable;		//设置地块是否允许增长
 	QStringList msHashList;		//GeoHash list
 	int mnGeoHashScale;
+	bool mbIsNormailization;
 };
 
 

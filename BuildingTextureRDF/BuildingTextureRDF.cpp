@@ -9,6 +9,7 @@ BuildingTextureRDF::BuildingTextureRDF()
 	mvHashBuildings.clear();
 	mnGeoHashScale = 8;
 	msHashList.clear();
+	mbIsNormailization = true;
 }
 
 
@@ -20,7 +21,7 @@ BuildingTextureRDF::~BuildingTextureRDF()
 
 bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLatCol, int nLonCol, int nPerFloorAreaCol,\
 	int nFloorCol, int nHeightCol /*= -1*/, int nDemCol, double dPerFloorHeight /*= 3.0f*/,\
-	int nGeoHashScale /*= 8*/)
+	int nGeoHashScale /*= 8*/, bool bIsNormal)
 {
 	if (nFloorCol < 0 && nHeightCol < 0)
 	{
@@ -29,6 +30,7 @@ bool BuildingTextureRDF::loadBuildingData(char* sfilename, int nFIDCol, int nLat
 		return false;
 	}
 
+	mbIsNormailization = bIsNormal;
 	mnGeoHashScale = nGeoHashScale;
 	logLn(QString("GeoHash Scale = %1").arg(mnGeoHashScale));
 	//cout << "GeoHash Scale = " << mnGeoHashScale << endl;
@@ -205,6 +207,7 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 	double dCurRadius = 0;
 	double dMaxRadius = obs.dMaxRadius;
 	obs.vdRdfValues.clear();
+	double mdRdfSum = 0.0f;
 	for (dCurRadius = 0; dCurRadius <= dMaxRadius-obs.dStepRadius; dCurRadius += obs.dStepRadius)
 	{		
 		double dCurMaxRadius = dCurRadius + obs.dStepRadius;
@@ -232,24 +235,34 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 		double dSphereShellVolRatio = dBuildingVolInSphereShell / dSphereShellVol;
 
 		//得到当前的RDF
-		double dRdf = 1.0f / dBuildingVolRatio * dSphereShellVolRatio;
+		double dRdf = 0;
+		if (mbIsNormailization)
+			dRdf = 1.0f / dBuildingVolRatio * dSphereShellVolRatio;
+		else
+			dRdf = dSphereShellVolRatio;
 
 		//加入数据
 		obs.vdRdfValues.append(dRdf);
+		mdRdfSum += dRdf;
 	}
 
 
 	// 计算熵
 	double dEntropy = 0;
-	foreach(float dval, obs.vdRdfValues)
+	if (mdRdfSum == 0)
+		obs.dEntropy = 0;
+	else
 	{
-		if (dval < 10e-6)
-			continue;
-		dEntropy += dval*log(dval);
+		foreach(float dval, obs.vdRdfValues)
+		{
+			if (dval < 10e-6)
+				continue;
+			double dvalNorm = dval / mdRdfSum;
+			dEntropy += dvalNorm*log(dvalNorm);
+		}
+		obs.dEntropy = -dEntropy;
 	}
-	obs.dEntropy = -dEntropy;
-
-
+	
 	return true;
 }
 

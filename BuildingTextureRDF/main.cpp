@@ -6,15 +6,15 @@ using namespace std;
 
 int run(int argc, char *argv[])
 {
-	if (argc < 15)
+	if (argc < 16)
 	{
 		cout << "Please execute program like this:" << endl;
 		cout << "\tBuildingTextureRDF.exe input_building_attribute_csv input_calculate_position_csv" << \
 			" output_csv FID_col_num(int) Lat_col_num(int) Lon_col_num(int) Per_Area_col_num(int) Floor_count_col(int. if not, set to -1)" << \
 			" Height_col(int. if not, set to -1) Dem_col(int. if not, set to -1) Per_Floor_Height(float, unit:m) GeoHashScale(int. 6-10)"<< \
-			" step_radius(float) max_radius(float)" << endl;
+			" step_radius(float) max_radius(float) isNormal(0=No/1=Yes)" << endl;
 		cout << "Example: " << endl;
-		cout << "Example: BuildingTextureRDF.exe ./data/eerduosi.csv ./data/input_lat_lon.csv ./data/output_result.csv 0 2 3 4 1 -1 -1 3.0 8 50.0 1000.0" << endl;
+		cout << "Example: BuildingTextureRDF.exe ./data/eerduosi.csv ./data/input_lat_lon.csv ./data/output_result.csv 0 2 3 4 1 -1 -1 3.0 8 50.0 1000.0 0" << endl;
 		cout << "Exit." << endl;
 		return -1;
 	}
@@ -34,6 +34,9 @@ int run(int argc, char *argv[])
 	int nHashScale = atoi(argv[12]);
 	float dStepRadius = atof(argv[13]);
 	float dMaxRadius = atof(argv[14]);
+	int nIsNorm = atoi(argv[15]);
+	bool bIsNorm = true;
+	if (nIsNorm <= 0) bIsNorm = false;
 
 	//输出参数显示
 	cout << "Input Building File: " << inputBuildingAttibuteFile.toLocal8Bit().data() << endl;
@@ -50,6 +53,7 @@ int run(int argc, char *argv[])
 	cout << "* GEO-HASH SCALE = " << nHashScale << endl;
 	cout << "* STEP RADIUS = " << dStepRadius << endl;
 	cout << "* MAXIMUM RADIUS = " << dMaxRadius << endl;
+	cout << "* IS NORMAILIZATION = " << nIsNorm << endl;
 
 	//判断
 	if (dMaxRadius < dStepRadius)
@@ -112,7 +116,7 @@ int run(int argc, char *argv[])
 	BuildingTextureRDF btr;
 	btr.loadBuildingData(inputBuildingAttibuteFile.toLocal8Bit().data(), \
 		nFidCol, nLatCol, nLngCol, nPerAreaCol, nFloorCol, \
-		nHeightCol, nDemCol, dFloorHeight, nHashScale);
+		nHeightCol, nDemCol, dFloorHeight, nHashScale, bIsNorm);
 	btr.calculateSeveralRfdValues(vObs);
 
 	//输出文件
