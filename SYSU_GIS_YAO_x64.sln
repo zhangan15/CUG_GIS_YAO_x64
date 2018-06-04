@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildingTextureRDF", "Build
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thulac", "thulac\thulac.vcxproj", "{A7A005B5-A041-40DF-B905-B489C43F2318}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SparseAutoEncoder", "SparseAutoEncoder\SparseAutoEncoder.vcxproj", "{7921549B-90FB-4B7D-A851-E3F59FF307C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -169,6 +171,12 @@ Global
 		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x64.Build.0 = Release|x64
 		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x86.ActiveCfg = Release|Win32
 		{A7A005B5-A041-40DF-B905-B489C43F2318}.Release|x86.Build.0 = Release|Win32
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Debug|x64.ActiveCfg = Debug|x64
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Debug|x64.Build.0 = Debug|x64
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Debug|x86.ActiveCfg = Debug|x64
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x64.ActiveCfg = Release|x64
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x64.Build.0 = Release|x64
+		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
