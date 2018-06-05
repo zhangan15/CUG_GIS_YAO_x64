@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 	// training model
 	SparseAutoEncoder sae;
 	// X, hidden_layer_size, learning_rate, epochs, batch_size, lambda, rho, sparsity_weight
-	sae.trainSparseAutoEncoder(X, 25, 0.1, 200, 0, 0.0001, 0.1, 2);
+	sae.trainSparseAutoEncoder(X, 100, 0.1, 200, 0, 0.0001, 0.1, 2);
 	
 	// save sae weights (W1, W2, b1, b2)
   	sae.saveNetWeight(data_dir + "training_weight.csv");
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 #ifdef ENCODER
 	// before loading weights, net structure should be defined first
-	SparseAutoEncoder sae(784, 25);	//nFeats, hidden_layer_size
+	SparseAutoEncoder sae(784, 100);	//nFeats, hidden_layer_size
 	sae.loadNetWeight(data_dir + "training_weight.csv");	//csv2mat输入的是nFeats*nSamples文件 （提供的mnist.csv属于这种）, normal_csv2mat输入的是nSamples*nFeats文件
 
 
