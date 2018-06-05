@@ -389,6 +389,8 @@ int main(int c, char** argv)
 		std::cout << breakValue << std::endl << std::endl;
 
 	std::cout << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+
+	return 1;
 	//std::cout << "Press a char and <enter> to terminate" << std::endl;
 	//char ch;
 	//std::cin >> ch; // wait for user to enter a key
