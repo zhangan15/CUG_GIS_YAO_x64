@@ -43,6 +43,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thulac", "thulac\thulac.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SparseAutoEncoder", "SparseAutoEncoder\SparseAutoEncoder.vcxproj", "{7921549B-90FB-4B7D-A851-E3F59FF307C1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JenksNaturalBreaks", "JenksNaturalBreaks\JenksNaturalBreaks.vcxproj", "{A95AE235-5906-4FD2-9063-14E7122FD020}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -177,6 +179,14 @@ Global
 		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x64.ActiveCfg = Release|x64
 		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x64.Build.0 = Release|x64
 		{7921549B-90FB-4B7D-A851-E3F59FF307C1}.Release|x86.ActiveCfg = Release|x64
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Debug|x64.ActiveCfg = Debug|x64
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Debug|x64.Build.0 = Debug|x64
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Debug|x86.ActiveCfg = Debug|Win32
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Debug|x86.Build.0 = Debug|Win32
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x64.ActiveCfg = Release|x64
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x64.Build.0 = Release|x64
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x86.ActiveCfg = Release|Win32
+		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
