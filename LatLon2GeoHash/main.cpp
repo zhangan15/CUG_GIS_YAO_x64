@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 	double lat = 30.000000;
 	double lon = 114.000000;
 
-	std::string str = GeoHash::EncodeLatLon(lat, lon, 12);
+	std::string str = GeoHash::EncodeLatLon(lat, lon, 10);
 	cout << str << endl;
 
 	double lat1, lon1;

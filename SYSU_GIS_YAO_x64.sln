@@ -45,6 +45,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SparseAutoEncoder", "Sparse
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JenksNaturalBreaks", "JenksNaturalBreaks\JenksNaturalBreaks.vcxproj", "{A95AE235-5906-4FD2-9063-14E7122FD020}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicLandParcelSubdivision(DLPS)", "DynamicLandParcelSubdivision(DLPS)\DynamicLandParcelSubdivision(DLPS).vcxproj", "{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -187,6 +189,12 @@ Global
 		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x64.Build.0 = Release|x64
 		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x86.ActiveCfg = Release|Win32
 		{A95AE235-5906-4FD2-9063-14E7122FD020}.Release|x86.Build.0 = Release|Win32
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Debug|x64.ActiveCfg = Debug|x64
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Debug|x64.Build.0 = Debug|x64
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Debug|x86.ActiveCfg = Debug|x64
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x64.ActiveCfg = Release|x64
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x64.Build.0 = Release|x64
+		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
