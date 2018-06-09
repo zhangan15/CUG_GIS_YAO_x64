@@ -47,6 +47,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JenksNaturalBreaks", "Jenks
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicLandParcelSubdivision(DLPS)", "DynamicLandParcelSubdivision(DLPS)\DynamicLandParcelSubdivision(DLPS).vcxproj", "{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ADE20K_FCN", "ADE20K_FCN", "{45C73FA4-0481-4BD5-963D-DE7EAF6A7B25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HousingPriceSimulator", "HousingPriceSimulator", "{497B453B-60CA-4CE5-8612-F5042F228E13}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UMCNN_HousingPriceSimulator", "UMCNN_HousingPriceSimulator\UMCNN_HousingPriceSimulator.vcxproj", "{E034291C-BAF5-40FA-AD1D-48162E7B205B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StreetViewProcess", "StreetViewProcess", "{C91C3494-E37F-4592-BEA2-CDD5CBB8DE1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -195,8 +203,21 @@ Global
 		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x64.ActiveCfg = Release|x64
 		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x64.Build.0 = Release|x64
 		{DF3D5A39-B01C-4F30-B996-C11DEFD8E768}.Release|x86.ActiveCfg = Release|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Debug|x64.ActiveCfg = Debug|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Debug|x64.Build.0 = Debug|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Debug|x86.ActiveCfg = Debug|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Release|x64.ActiveCfg = Release|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Release|x64.Build.0 = Release|x64
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FB1FE532-FB8B-46BD-95AE-CE65C7EC4C11} = {45C73FA4-0481-4BD5-963D-DE7EAF6A7B25}
+		{BAD461BD-D699-4E95-903B-C46291444613} = {45C73FA4-0481-4BD5-963D-DE7EAF6A7B25}
+		{E6BED9BA-8560-4DDA-8469-D594CC77F852} = {C91C3494-E37F-4592-BEA2-CDD5CBB8DE1F}
+		{2719AE12-C056-46B8-9532-251B53A4CBC9} = {C91C3494-E37F-4592-BEA2-CDD5CBB8DE1F}
+		{E034291C-BAF5-40FA-AD1D-48162E7B205B} = {497B453B-60CA-4CE5-8612-F5042F228E13}
 	EndGlobalSection
 EndGlobal
