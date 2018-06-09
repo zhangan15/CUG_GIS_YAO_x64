@@ -8,6 +8,10 @@
 using namespace std;
 using namespace dlib;
 
+#define INPUT_DATATYPE GDT_Byte
+#define MAX_RECT_SIZE 100
+#define RAND_RECT_SIZE 50
+
 //Fitter for simulation
 using net_type = loss_mean_squared<
 	fc<1,
@@ -28,14 +32,38 @@ struct training_sample
 // obtain image block from HSR RS image
 bool obtainImageFromHSR(CGDALRead* pInImg, double dLon, double dLat, int nWidth, int nHeight, matrix<rgb_pixel>& input_image)
 {
-	if (pInImg == NULL)
+	if (pInImg == NULL || pInImg->datatype() != INPUT_DATATYPE || pInImg->bandnum() != 3)
+	{
+		cout << "Input image format error." << endl;
 		return false;
+	}
+
+	double curCol, curRow;
+	pInImg->world2Pixel(dLat, dLon, &curCol, &curRow);
 
 	//读入数据
+	int minCol, minRow, maxCol, maxRow;
+	minCol = int(curCol - nHeight/2 + 0.5);
+	maxCol = int(curCol + nHeight / 2 + 0.5);
+	minRow = int(curRow - nWidth / 2 + 0.5);
+	maxRow = int(curRow + nWidth / 2 + 0.5);
 
-
+	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
+		return false;
+	
 	//处理
 	input_image.set_size(nWidth, nHeight);
+
+	int nCol, nRow;
+	for (nRow = minRow; nRow < maxRow; nRow++)
+	{
+		for (nCol = minCol; nCol < maxCol; nCol++)
+		{
+			input_image(nRow-minRow, nCol-minCol).red = *(unsigned char*) pInImg->read(nRow, nCol, 0);
+			input_image(nRow - minRow, nCol - minCol).green = *(unsigned char*) pInImg->read(nRow, nCol, 1);
+			input_image(nRow - minRow, nCol - minCol).blue = *(unsigned char*) pInImg->read(nRow, nCol, 2);
+		}
+	}
 	
 
 	return true;
