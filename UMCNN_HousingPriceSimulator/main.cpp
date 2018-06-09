@@ -87,6 +87,7 @@ int main(int argc, char *argv[])
 	//读入遥感影像
 
 	//生成训练数据
+	std::vector<training_sample> training_samples;
 
 	//构建训练数据集
 
