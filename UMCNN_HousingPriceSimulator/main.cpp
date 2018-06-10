@@ -277,8 +277,8 @@ int main(int argc, char *argv[])
 
 	//Predicting	
 #ifdef UMCNN_PREDICT_PROCESS
-	char* sPreFn = "./data/guanggu_mini_mini_4m.tif";
-	char* sOutFn = "./data/guanggu_mini_mini_4m_housing_price.tif";
+	char* sPreFn = "./data/wuhan_ge_clip_center.tif";
+	char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price.tif";
 	UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
 #endif
 	
