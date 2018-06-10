@@ -127,11 +127,19 @@ int UMCNN_Training_Process(
 	net.clean();
 	serialize(sOutDnnFn) << net;
 
+	//训练集精度评价
+	std::vector<float> predicted_labels_tr = net(training_images);
+	double sum_val = 0;
+	for (size_t i = 0; i < training_images.size(); ++i)
+	{
+		sum_val += (predicted_labels_tr[i] - training_labels[i])*(predicted_labels_tr[i] - training_labels[i])*dNormalVal*dNormalVal;
+	}
+	sum_val = sqrt(sum_val / (double)training_images.size());
+	cout << "Training RMSE = " << sum_val << endl;
+
 	//精度评价
 	std::vector<float> predicted_labels = net(testing_images);
-	predicted_labels = net(testing_images);
-
-	double sum_val = 0;
+	sum_val = 0;
 	for (size_t i = 0; i < testing_images.size(); ++i)
 	{
 		sum_val += (predicted_labels[i] - testing_labels[i])*(predicted_labels[i] - testing_labels[i])*dNormalVal*dNormalVal;
@@ -252,7 +260,7 @@ int main(int argc, char *argv[])
 	
 
 	//网络训练参数
-	double dNormalVal = 30000;	//拟合数据降低项，防止损失函数爆炸
+	double dNormalVal = 10000;	//拟合数据降低项，防止损失函数爆炸
 	double dInitLearningRate = 0.01;	//初试学习率
 	double dMinLearningRate = 0.00001;	//最终学习率
 	int nMinBatchSize = 128;			//batch size
@@ -269,8 +277,8 @@ int main(int argc, char *argv[])
 
 	//Predicting	
 #ifdef UMCNN_PREDICT_PROCESS
-	char* sPreFn = "./data/wuhan_ge_clip_center.tif";
-	char* sOutFn = "./data/wuhan_ge_clip_center_housing_price.tif";
+	char* sPreFn = "./data/guanggu_mini_mini_4m.tif";
+	char* sOutFn = "./data/guanggu_mini_mini_4m_housing_price.tif";
 	UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
 #endif
 	

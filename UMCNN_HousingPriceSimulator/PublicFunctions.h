@@ -13,7 +13,7 @@ using namespace dlib;
 #define INPUT_DATATYPE GDT_Byte
 #define OUTPUT_DATATYPE GDT_Float32
 #define MAX_RECT_SIZE 120
-#define RAND_RECT_SIZE 60
+#define RAND_RECT_SIZE 50
 
 struct hp_sample
 {
