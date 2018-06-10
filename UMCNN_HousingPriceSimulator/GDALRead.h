@@ -23,7 +23,7 @@ public:
 public:
 	bool loadFrom(const char* _filename);
 	unsigned char* read(size_t _row, size_t _col, size_t _band);
-	unsigned char* readL(size_t _row, size_t _col, size_t _band);	//extension read-data
+	unsigned char* readL(long _row, long _col, size_t _band);	//extension read-data
 	template<class TT> double linRead(double _row, double _col, size_t _band);
 
 public:

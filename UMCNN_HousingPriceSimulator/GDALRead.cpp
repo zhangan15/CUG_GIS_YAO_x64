@@ -258,7 +258,7 @@ unsigned char* CGDALRead::read( size_t _row, size_t _col, size_t _band )
 	return &(mpData[(_band*mnRows*mnCols + _row*mnCols + _col)*mnPerPixSize]);
 }
 
-unsigned char* CGDALRead::readL( size_t _row, size_t _col, size_t _band )
+unsigned char* CGDALRead::readL( long _row, long _col, size_t _band )
 {
 	//if out of rect, take mirror
 	if (_row < 0)
