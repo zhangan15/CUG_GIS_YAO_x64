@@ -3,18 +3,18 @@
 #include "gdal_priv.h"
 #include "GDALWrite.h"
 #include "PublicFunctions.h"
-
-
+#include <omp.h>
 
 //Fitter for simulation
 using net_type = loss_mean_squared<
 	fc<1,
+	dropout<relu<fc<32,
 	dropout<relu<fc<128,
 	dropout<relu<con<32, 3, 3, 1, 1,
 	max_pool<2, 2, 2, 2, relu<con<32, 3, 3, 1, 1,
 	max_pool<2, 2, 2, 2, relu<con<16, 3, 3, 1, 1,
 	input<matrix<rgb_pixel>>
-	>>>>>>>>>>>>>>;
+	>>>>>>>>>>>>>>>>>;
 
 int UMCNN_Training_Process(
 	char* sInHousingPriceCsvFn,		//房价数据 lng, lat, housing_price(yuan/m2)
@@ -180,16 +180,19 @@ int UMCNN_Predicting_Process(
 	CGDALWrite output_img;
 	output_img.init(sOutHpTifFn, &input_img, 1, OUTPUT_DATATYPE, 0.0f);
 
-	int nRow = 0, nCol = 0, k=0;
-	float val = 0;
+	int nRow = 0, nCol = 0, k = 0;
 	int _tmpSum = 0;
+	float val = 0;
+
+	//加快效率
+//#pragma omp parallel for private (nCol, k, _tmpSum, val， net) schedule(static)
 	for (nRow = 0; nRow < output_img.rows(); nRow++)
 	{
-		if ((nRow + 1) % 50 == 0)
-			cout << "Processing Line No. " << (nRow + 1) << " / " << output_img.rows() << " ..." << endl;
+		//if ((nRow + 1) % 50 == 0)
+		cout << "Processing Line No. " << (nRow + 1) << " / " << output_img.rows() << " ..." << endl;
 
 		for (nCol = 0; nCol < output_img.cols(); nCol++)
-		{
+		{			
 			_tmpSum = 0;
 			for (k = 0; k<input_img.bandnum(); k++)
 				_tmpSum += *(unsigned char*)input_img.read(nRow, nCol, k);				
@@ -233,6 +236,8 @@ int main(int argc, char *argv[])
 		CPLSetConfigOption("SHAPE_ENCODING", "");			//支持属性表中的中文字符;
 		cout << "[Init]  environment initialization success!\n";
 	}
+
+	//omp_set_num_threads(4);
 	
 
 	//输入数据参数
@@ -240,7 +245,7 @@ int main(int argc, char *argv[])
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
 	int nCropCount = 10;		//每个数据点随机取图像数目
-	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
+	char* sImgFn = "./data/wuhan_ge_clip_center_resample.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
 	char* sOutFn = "./data/wuhan_housing_price.tif";
 
 	//网络训练参数
