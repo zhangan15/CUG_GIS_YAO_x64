@@ -2,7 +2,7 @@
 #include <QtCore>
 
 // obtain image block from HSR RS image
-bool ObtainImageFromHSR(CGDALRead* pInImg, double dLon, double dLat, int nWidth, int nHeight, matrix<rgb_pixel>& input_image)
+bool ObtainRectImageFromHsrByLatLon(CGDALRead* pInImg, double dLon, double dLat, int nWidth, int nHeight, matrix<rgb_pixel>& input_image)
 {
 	if (pInImg == NULL || pInImg->datatype() != INPUT_DATATYPE || pInImg->bandnum() < 3)
 	{
@@ -25,6 +25,47 @@ bool ObtainImageFromHSR(CGDALRead* pInImg, double dLon, double dLat, int nWidth,
 
 	//处理
 	input_image.set_size(nWidth, nHeight);
+
+	int nCol, nRow;
+	for (nRow = minRow; nRow < maxRow; nRow++)
+	{
+		for (nCol = minCol; nCol < maxCol; nCol++)
+		{
+			input_image(nRow - minRow, nCol - minCol).red = *(unsigned char*)pInImg->read(nRow, nCol, 0);
+			input_image(nRow - minRow, nCol - minCol).green = *(unsigned char*)pInImg->read(nRow, nCol, 1);
+			input_image(nRow - minRow, nCol - minCol).blue = *(unsigned char*)pInImg->read(nRow, nCol, 2);
+		}
+	}
+
+	//dlib::save_png(input_image, "./test.png");
+
+	return true;
+}
+
+
+
+bool ObtainRectImageFromHSR(CGDALRead* pInImg, int CurRow, int CurCol, int nWidth, int nHeight, matrix<rgb_pixel>& input_image)
+{
+	if (pInImg == NULL || pInImg->datatype() != INPUT_DATATYPE || pInImg->bandnum() < 3)
+	{
+		cout << "Input image format error." << endl;
+		return false;
+	}
+
+
+	//读入数据
+	int minCol, minRow, maxCol, maxRow;
+	minCol = int(CurCol - nHeight / 2 + 0.5);
+	maxCol = int(CurCol + nHeight / 2 + 0.5);
+	minRow = int(CurRow - nWidth / 2 + 0.5);
+	maxRow = int(CurRow + nWidth / 2 + 0.5);
+
+	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
+		return false;
+
+	//处理
+	input_image.set_size(nWidth, nHeight);
+
 
 	int nCol, nRow;
 	for (nRow = minRow; nRow < maxRow; nRow++)
@@ -103,7 +144,7 @@ bool ChangeHpData2CnnSamples(CGDALRead* pInImg, std::vector<hp_data> vHpData, in
 			cout << "Processing No. " << nCount << " / " << vHpData.size() << "..." << endl;
 
 		hp_sample sap;
-		if (!ObtainImageFromHSR(pInImg, dt.dlon, dt.dlat, nWidth, nHeight, sap.input_image))
+		if (!ObtainRectImageFromHsrByLatLon(pInImg, dt.dlon, dt.dlat, nWidth, nHeight, sap.input_image))
 			continue;
 		sap.dPrice = dt.dPrice;
 		vSamples.push_back(sap);
