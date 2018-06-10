@@ -11,7 +11,7 @@ using namespace std;
 using namespace dlib;
 
 #define INPUT_DATATYPE GDT_Byte
-#define MAX_RECT_SIZE 100
+#define MAX_RECT_SIZE 200
 #define RAND_RECT_SIZE 80
 
 struct hp_sample

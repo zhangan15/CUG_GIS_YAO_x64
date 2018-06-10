@@ -27,19 +27,21 @@ int main(int argc, char *argv[])
 		CPLSetConfigOption("SHAPE_ENCODING", "");			//支持属性表中的中文字符;
 		cout << "[Init]  environment initialization success!\n";
 	}
+	
 
 	//输入数据参数
 	char* sHpCsvFn = "./data/wuhan_price.csv";
-	double dMinVal = 1000;
-	double dMaxVal = 60000;
-	int nCropCount = 5;
+	double dMinVal = 1000;		//过滤低于最小
+	double dMaxVal = 60000;		//过滤超出最大
+	int nCropCount = 10;		//每个数据点随机取图像数目
 	char* sImgFn = "E:/Data/wuhan_google_earth/Level15/wuhan_ge.tif";
 
 	//网络训练参数
-	double dInitLearningRate = 0.1;
-	double dMinLearningRate = 0.00001;
-	int nMinBatchSize = 128;
-	char* sNetFn = "./wuhan_umcnn.dnn";	//输出
+	double dNormalVal = 30000;	//拟合数据降低项，防止损失函数爆炸
+	double dInitLearningRate = 0.01;	//初试学习率
+	double dMinLearningRate = 0.00001;	//最终学习率
+	int nMinBatchSize = 128;			//batch size
+	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
 	//variables
 	std::vector<hp_data> vHpData;
@@ -103,12 +105,12 @@ int main(int argc, char *argv[])
 			if (rnd.get_random_double() <= 0.8)
 			{
 				training_images.push_back(output_img);
-				training_labels.push_back(sap.dPrice);
+				training_labels.push_back(sap.dPrice/dNormalVal);
 			}
 			else
 			{
 				testing_images.push_back(output_img);
-				testing_labels.push_back(sap.dPrice);
+				testing_labels.push_back(sap.dPrice/dNormalVal);
 			}
 		}
 	}
@@ -142,7 +144,7 @@ int main(int argc, char *argv[])
 	double sum_val = 0;
 	for (size_t i = 0; i < testing_images.size(); ++i)
 	{
-		sum_val += (predicted_labels[i]-testing_labels[i])*(predicted_labels[i] - testing_labels[i]);
+		sum_val += (predicted_labels[i]-testing_labels[i])*(predicted_labels[i] - testing_labels[i])*dNormalVal*dNormalVal;
 	}
 	sum_val = sqrt(sum_val/(double)testing_images.size());
 	cout << "Testing RMSE = " << sum_val << endl;
