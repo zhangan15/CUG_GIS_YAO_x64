@@ -5,6 +5,9 @@
 #include "PublicFunctions.h"
 #include <omp.h>
 
+// #define UMCNN_TRAIN_PROCESS
+#define UMCNN_PREDICT_PROCESS
+
 //Fitter for simulation
 using net_type = loss_mean_squared<
 	fc<1,
@@ -234,7 +237,7 @@ int main(int argc, char *argv[])
 		OGRRegisterAll();
 		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");	//支持中文路径;
 		CPLSetConfigOption("SHAPE_ENCODING", "");			//支持属性表中的中文字符;
-		cout << "[Init]  environment initialization success!\n";
+		cout << "[Init] Environment Initialization Success!\n";
 	}
 
 	//omp_set_num_threads(4);
@@ -245,8 +248,8 @@ int main(int argc, char *argv[])
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
 	int nCropCount = 10;		//每个数据点随机取图像数目
-	char* sImgFn = "./data/wuhan_ge_clip_center_resample.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
-	char* sOutFn = "./data/wuhan_housing_price.tif";
+	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
+	
 
 	//网络训练参数
 	double dNormalVal = 30000;	//拟合数据降低项，防止损失函数爆炸
@@ -257,12 +260,20 @@ int main(int argc, char *argv[])
 	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
 	//Training
+#ifdef UMCNN_TRAIN_PROCESS
 	UMCNN_Training_Process(sHpCsvFn, sImgFn, sNetFn, sTempNetFn, \
 		dNormalVal, dMinVal, dMaxVal, nCropCount, \
 		dInitLearningRate, dMinLearningRate, nMinBatchSize);
+#endif
+	
 
 	//Predicting	
-	UMCNN_Predicting_Process(sImgFn, sNetFn, sOutFn, dNormalVal);
+#ifdef UMCNN_PREDICT_PROCESS
+	char* sPreFn = "./data/guanggu_4m.tif";
+	char* sOutFn = "./data/guanggu_housing_price.tif";
+	UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
+#endif
+	
 
 	
 	return 0;

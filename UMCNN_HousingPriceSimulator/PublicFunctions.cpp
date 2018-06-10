@@ -20,8 +20,8 @@ bool ObtainRectImageFromHsrByLatLon(CGDALRead* pInImg, double dLon, double dLat,
 	minRow = int(curRow - nWidth / 2 + 0.5);
 	maxRow = int(curRow + nWidth / 2 + 0.5);
 
-	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
-		return false;
+// 	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
+// 		return false;
 
 	//处理
 	input_image.set_size(nWidth, nHeight);
@@ -31,9 +31,22 @@ bool ObtainRectImageFromHsrByLatLon(CGDALRead* pInImg, double dLon, double dLat,
 	{
 		for (nCol = minCol; nCol < maxCol; nCol++)
 		{
+			int imRow = nRow - minRow;
+			int imCol = nCol - minCol;
+			imRow = (imRow > 0) ? imRow : 0;
+			imRow = (imRow < nHeight) ? imRow : (nHeight - 1);
+			imCol = (imCol > 0) ? imCol : 0;
+			imCol = (imCol < nWidth) ? imCol : (nWidth - 1);
+
+			input_image(imRow, imCol).red = *(unsigned char*)pInImg->readL(nRow, nCol, 0);
+			input_image(imRow, imCol).green = *(unsigned char*)pInImg->readL(nRow, nCol, 1);
+			input_image(imRow, imCol).blue = *(unsigned char*)pInImg->readL(nRow, nCol, 2);
+
+			/*
 			input_image(nRow - minRow, nCol - minCol).red = *(unsigned char*)pInImg->read(nRow, nCol, 0);
 			input_image(nRow - minRow, nCol - minCol).green = *(unsigned char*)pInImg->read(nRow, nCol, 1);
 			input_image(nRow - minRow, nCol - minCol).blue = *(unsigned char*)pInImg->read(nRow, nCol, 2);
+			*/
 		}
 	}
 
@@ -60,8 +73,8 @@ bool ObtainRectImageFromHSR(CGDALRead* pInImg, int CurRow, int CurCol, int nWidt
 	minRow = int(CurRow - nWidth / 2 + 0.5);
 	maxRow = int(CurRow + nWidth / 2 + 0.5);
 
-	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
-		return false;
+// 	if (minCol < 0 || maxCol > pInImg->cols() || minRow < 0 || maxRow > pInImg->rows())
+// 		return false;
 
 	//处理
 	input_image.set_size(nWidth, nHeight);
@@ -72,9 +85,16 @@ bool ObtainRectImageFromHSR(CGDALRead* pInImg, int CurRow, int CurCol, int nWidt
 	{
 		for (nCol = minCol; nCol < maxCol; nCol++)
 		{
-			input_image(nRow - minRow, nCol - minCol).red = *(unsigned char*)pInImg->read(nRow, nCol, 0);
-			input_image(nRow - minRow, nCol - minCol).green = *(unsigned char*)pInImg->read(nRow, nCol, 1);
-			input_image(nRow - minRow, nCol - minCol).blue = *(unsigned char*)pInImg->read(nRow, nCol, 2);
+			int imRow = nRow - minRow;
+			int imCol = nCol - minCol;
+			imRow = (imRow > 0) ? imRow : 0;
+			imRow = (imRow < nHeight) ? imRow : (nHeight - 1);
+			imCol = (imCol > 0) ? imCol : 0;
+			imCol = (imCol < nWidth) ? imCol : (nWidth - 1);
+
+			input_image(imRow, imCol).red = *(unsigned char*)pInImg->readL(nRow, nCol, 0);
+			input_image(imRow, imCol).green = *(unsigned char*)pInImg->readL(nRow, nCol, 1);
+			input_image(imRow, imCol).blue = *(unsigned char*)pInImg->readL(nRow, nCol, 2);
 		}
 	}
 
