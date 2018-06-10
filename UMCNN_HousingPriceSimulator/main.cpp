@@ -185,7 +185,7 @@ int UMCNN_Predicting_Process(
 	int _tmpSum = 0;
 	for (nRow = 0; nRow < output_img.rows(); nRow++)
 	{
-		if ((nRow + 1) % 100 == 0)
+		if ((nRow + 1) % 50 == 0)
 			cout << "Processing Line No. " << (nRow + 1) << " / " << output_img.rows() << " ..." << endl;
 
 		for (nCol = 0; nCol < output_img.cols(); nCol++)
@@ -240,8 +240,8 @@ int main(int argc, char *argv[])
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
 	int nCropCount = 10;		//每个数据点随机取图像数目
-	char* sImgFn = "E:/Data/wuhan_google_earth/Level15/wuhan_ge.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
-	char* sOutFileName = "./data/wuhan_housing_price.tif";
+	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
+	char* sOutFn = "./data/wuhan_housing_price.tif";
 
 	//网络训练参数
 	double dNormalVal = 30000;	//拟合数据降低项，防止损失函数爆炸
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 		dInitLearningRate, dMinLearningRate, nMinBatchSize);
 
 	//Predicting	
-	UMCNN_Predicting_Process(sImgFn, sNetFn, sOutFileName, dNormalVal);
+	UMCNN_Predicting_Process(sImgFn, sNetFn, sOutFn, dNormalVal);
 
 	
 	return 0;
