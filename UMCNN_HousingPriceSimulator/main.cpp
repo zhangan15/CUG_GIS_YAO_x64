@@ -5,8 +5,7 @@
 #include "PublicFunctions.h"
 #include <omp.h>
 
-// #define UMCNN_TRAIN_PROCESS
-#define UMCNN_PREDICT_PROCESS
+
 
 //Fitter for simulation
 using net_type = loss_mean_squared<
@@ -267,22 +266,26 @@ int main(int argc, char *argv[])
 	char* sTempNetFn = "./data/temp_dnn.dat";	//训练DNN临时文件
 	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
+	//是否训练
+	bool bIsTraining = false;
+	bool bIsPrediction = true;
+
 	//Training
-#ifdef UMCNN_TRAIN_PROCESS
-	UMCNN_Training_Process(sHpCsvFn, sImgFn, sNetFn, sTempNetFn, \
-		dNormalVal, dMinVal, dMaxVal, nCropCount, \
-		dInitLearningRate, dMinLearningRate, nMinBatchSize);
-#endif
+	if (bIsTraining)
+	{
+		UMCNN_Training_Process(sHpCsvFn, sImgFn, sNetFn, sTempNetFn, \
+			dNormalVal, dMinVal, dMaxVal, nCropCount, \
+			dInitLearningRate, dMinLearningRate, nMinBatchSize);
+	}
 	
-
+	
 	//Predicting	
-#ifdef UMCNN_PREDICT_PROCESS
-	char* sPreFn = "./data/wuhan_ge_clip_center.tif";
-	char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price.tif";
-	UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
-#endif
-	
-
+	if (bIsPrediction)
+	{
+		char* sPreFn = "./data/wuhan_ge_clip_center.tif";
+		char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price.tif";
+		UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
+	}
 	
 	return 0;
 }
