@@ -277,10 +277,10 @@ int main(int argc, char *argv[])
 	
 
 	//输入数据参数
-	char* sHpCsvFn = "./data/wuhan_price.csv";		//房价数据 lng, lat, housing_price(yuan/m2)
+	char* sHpCsvFn = "./data/wuhan_hp_citydata.csv";		//房价数据 lng, lat, housing_price(yuan/m2)
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
-	int nCropCount = 0;		//每个数据点随机取图像数目
+	int nCropCount = 0;			//每个数据点随机取图像数目
 	bool bIsCenterClip = true;	// 中心点随机大小切片/区域随机位置切片
 	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
 	
@@ -294,8 +294,8 @@ int main(int argc, char *argv[])
 	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
 	//是否训练
-	bool bIsTraining = true;
-	bool bIsPrediction = false;
+	bool bIsTraining = false;
+	bool bIsPrediction = true;
 
 	//Training
 	if (bIsTraining)
@@ -310,7 +310,7 @@ int main(int argc, char *argv[])
 	if (bIsPrediction)
 	{
 		char* sPreFn = "./data/wuhan_ge_clip_center.tif";
-		char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price_crop0_batch200.tif";
+		char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price_citydata_c0b200.tif";
 		UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
 	}
 	
