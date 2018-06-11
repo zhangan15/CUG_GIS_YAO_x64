@@ -10,13 +10,13 @@
 //Fitter for simulation
 using net_type = loss_mean_squared<
 	fc<1,
-	dropout<relu<fc<32,
+	relu<fc<32,
 	dropout<relu<fc<128,
 	dropout<relu<con<32, 3, 3, 1, 1,
 	max_pool<2, 2, 2, 2, relu<con<32, 3, 3, 1, 1,
 	max_pool<2, 2, 2, 2, relu<con<16, 3, 3, 1, 1,
 	input<matrix<rgb_pixel>>
-	>>>>>>>>>>>>>>>>>;
+	>>>>>>>>>>>>>>>>;
 
 int UMCNN_Training_Process(
 	char* sInHousingPriceCsvFn,		//房价数据 lng, lat, housing_price(yuan/m2)
@@ -26,7 +26,7 @@ int UMCNN_Training_Process(
 	double dNormalVal = 30000,		//拟合数据降低项，防止损失函数爆炸
 	double dMinVal = 1000,			//过滤低于最小
 	double dMaxVal = 100000,		//过滤超出最大
-	int nRandCropCount = 10,		//每个数据点随机取图像数目
+	int nRandCropCount = 10,		//每个数据点随机取图像数目, 0的话只去原图像
 	double dInitLearningRate = 0.01,	//初试学习率
 	double dMinLearningRate = 0.00001,	//最终学习率
 	int nMinBatchSize = 128				//batch size
@@ -84,11 +84,12 @@ int UMCNN_Training_Process(
 		nCount++;
 		if (nCount % 500 == 0)
 			cout << "Processing No. " << nCount << " / " << vSamples.size() << "..." << endl;
-
+		
 		matrix<rgb_pixel> output_img;
-		for (int i = 0; i < nRandCropCount; i++)
+
+		if (nRandCropCount == 0)
 		{
-			RandomlyCropImage(sap.input_image, output_img, rnd, RAND_RECT_SIZE, RAND_RECT_SIZE);
+			CenterCropImage(sap.input_image, output_img, RAND_RECT_SIZE, RAND_RECT_SIZE);
 
 			// 20% data set in test_images
 			if (rnd.get_random_double() <= 0.8)
@@ -102,6 +103,28 @@ int UMCNN_Training_Process(
 				testing_labels.push_back(sap.dPrice / dNormalVal);
 			}
 		}
+		else
+		{
+			for (int i = 0; i < nRandCropCount; i++)
+			{
+				
+				RandomlyCropImage(sap.input_image, output_img, rnd, RAND_RECT_SIZE, RAND_RECT_SIZE);
+
+				// 20% data set in test_images
+				if (rnd.get_random_double() <= 0.8)
+				{
+					training_images.push_back(output_img);
+					training_labels.push_back(sap.dPrice / dNormalVal);
+				}
+				else
+				{
+					testing_images.push_back(output_img);
+					testing_labels.push_back(sap.dPrice / dNormalVal);
+				}
+			}
+		}
+
+		
 	}
 	cout << "Training Data Count = " << training_images.size() << endl;
 	cout << "Training Label Count = " << training_labels.size() << endl;
@@ -254,15 +277,15 @@ int main(int argc, char *argv[])
 	char* sHpCsvFn = "./data/wuhan_price.csv";		//房价数据 lng, lat, housing_price(yuan/m2)
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
-	int nCropCount = 10;		//每个数据点随机取图像数目
+	int nCropCount = 0;		//每个数据点随机取图像数目
 	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
 	
 
 	//网络训练参数
-	double dNormalVal = 10000;	//拟合数据降低项，防止损失函数爆炸
+	double dNormalVal = 30000;	//拟合数据降低项，防止损失函数爆炸
 	double dInitLearningRate = 0.01;	//初试学习率
 	double dMinLearningRate = 0.00001;	//最终学习率
-	int nMinBatchSize = 128;			//batch size
+	int nMinBatchSize = 200;			//batch size
 	char* sTempNetFn = "./data/temp_dnn.dat";	//训练DNN临时文件
 	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
@@ -283,7 +306,7 @@ int main(int argc, char *argv[])
 	if (bIsPrediction)
 	{
 		char* sPreFn = "./data/wuhan_ge_clip_center.tif";
-		char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price.tif";
+		char* sOutFn = "./data/wuhan_ge_clip_center_4m_housing_price_crop0_batch200.tif";
 		UMCNN_Predicting_Process(sPreFn, sNetFn, sOutFn, dNormalVal);
 	}
 	

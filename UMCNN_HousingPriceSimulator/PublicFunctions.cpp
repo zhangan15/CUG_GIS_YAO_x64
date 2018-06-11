@@ -216,3 +216,15 @@ void RandomlyCropImage(
 	// And then randomly adjust the colors.
 	// apply_random_color_offset(output_image, rnd);
 }
+
+void CenterCropImage(const matrix<rgb_pixel>& input_image, \
+	matrix<rgb_pixel>& output_image, int nCropWidth, int nCropHeight)
+{
+	dlib::rectangle rect(nCropWidth, nCropHeight);
+	point offset((input_image.nc() - rect.width())/2, (input_image.nr() - rect.height())/2);
+	rect = move_rect(rect, offset);
+
+	const chip_details chip_details(rect, chip_dims(nCropHeight, nCropWidth));
+	// Crop the input image.
+	extract_image_chip(input_image, chip_details, output_image, interpolate_bilinear());
+}
