@@ -27,6 +27,7 @@ int UMCNN_Training_Process(
 	double dMinVal = 1000,			//过滤低于最小
 	double dMaxVal = 100000,		//过滤超出最大
 	int nRandCropCount = 10,		//每个数据点随机取图像数目, 0的话只去原图像
+	bool bIsRandomClip = true,		// 中心点随机大小切片/区域随机位置切片
 	double dInitLearningRate = 0.01,	//初试学习率
 	double dMinLearningRate = 0.00001,	//最终学习率
 	int nMinBatchSize = 128				//batch size
@@ -107,8 +108,10 @@ int UMCNN_Training_Process(
 		{
 			for (int i = 0; i < nRandCropCount; i++)
 			{
-				
-				RandomlyCropImage(sap.input_image, output_img, rnd, RAND_RECT_SIZE, RAND_RECT_SIZE);
+				if (bIsRandomClip)
+					CenterRandomlyCropImage(sap.input_image, output_img, rnd, RAND_RECT_SIZE, RAND_RECT_SIZE);
+				else								
+					RandomlyCropImage(sap.input_image, output_img, rnd, RAND_RECT_SIZE, RAND_RECT_SIZE);
 
 				// 20% data set in test_images
 				if (rnd.get_random_double() <= 0.8)
@@ -278,6 +281,7 @@ int main(int argc, char *argv[])
 	double dMinVal = 1000;		//过滤低于最小
 	double dMaxVal = 60000;		//过滤超出最大
 	int nCropCount = 0;		//每个数据点随机取图像数目
+	bool bIsCenterClip = true;	// 中心点随机大小切片/区域随机位置切片
 	char* sImgFn = "./data/wuhan_ge_clip_center.tif";	//高分遥感影像数据，至少3个波段，数值类型unsigned char
 	
 
@@ -290,14 +294,14 @@ int main(int argc, char *argv[])
 	char* sNetFn = "./data/wuhan_umcnn.dnn";	//输出DNN文件
 
 	//是否训练
-	bool bIsTraining = false;
-	bool bIsPrediction = true;
+	bool bIsTraining = true;
+	bool bIsPrediction = false;
 
 	//Training
 	if (bIsTraining)
 	{
 		UMCNN_Training_Process(sHpCsvFn, sImgFn, sNetFn, sTempNetFn, \
-			dNormalVal, dMinVal, dMaxVal, nCropCount, \
+			dNormalVal, dMinVal, dMaxVal, nCropCount, bIsCenterClip, \
 			dInitLearningRate, dMinLearningRate, nMinBatchSize);
 	}
 	

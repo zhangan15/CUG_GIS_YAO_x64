@@ -228,3 +228,33 @@ void CenterCropImage(const matrix<rgb_pixel>& input_image, \
 	// Crop the input image.
 	extract_image_chip(input_image, chip_details, output_image, interpolate_bilinear());
 }
+
+rectangle make_random_center_cropping_rect(
+	const matrix<rgb_pixel>& img,
+	dlib::rand& rnd
+)
+{
+	// figure out what rectangle we want to crop from the image
+	double mins = 0.25, maxs = 0.875;
+	auto scale = mins + rnd.get_random_double()*(maxs - mins);
+	auto size = scale*std::min(img.nr(), img.nc());
+	rectangle rect(size, size);
+	// randomly shift the box around
+	point offset((img.nc() - rect.width()) / 2, (img.nr() - rect.height()) / 2);
+	return move_rect(rect, offset);
+}
+
+void CenterRandomlyCropImage(const matrix<rgb_pixel>& input_image, matrix<rgb_pixel>& output_image, dlib::rand& rnd, int nCropWidth, int nCropHeight)
+{
+	const auto rect = make_random_center_cropping_rect(input_image, rnd);
+
+	const chip_details chip_details(rect, chip_dims(nCropHeight, nCropWidth));
+
+	// Crop the input image.
+	extract_image_chip(input_image, chip_details, output_image, interpolate_bilinear());
+
+	// Also randomly flip the input image and the labels.
+	if (rnd.get_random_double() > 0.5)
+		output_image = fliplr(output_image);
+}
+

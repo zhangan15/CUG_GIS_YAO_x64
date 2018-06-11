@@ -33,6 +33,6 @@ bool LoadHpDataFromCSV(char* fn, std::vector<hp_data>& vHpData, double dMinVal =
 bool ChangeHpData2CnnSamples(CGDALRead* pInImg, std::vector<hp_data> vHpData, int nWidth, int nHeight, std::vector<hp_sample>& vSamples);
 void RandomlyCropImage(const matrix<rgb_pixel>& input_image, matrix<rgb_pixel>& output_image, dlib::rand& rnd, int nCropWidth, int nCropHeight);
 void CenterCropImage(const matrix<rgb_pixel>& input_image, matrix<rgb_pixel>& output_image, int nCropWidth, int nCropHeight);
-
+void CenterRandomlyCropImage(const matrix<rgb_pixel>& input_image, matrix<rgb_pixel>& output_image, dlib::rand& rnd, int nCropWidth, int nCropHeight);
 
 #endif
