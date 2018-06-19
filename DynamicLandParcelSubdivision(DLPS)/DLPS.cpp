@@ -5,7 +5,7 @@
 
 #define PI 3.141592653589793
 #define MAXFEATURECOUNT 1000
-
+//最新改动在505行处
 DLPS::DLPS()
 {
 	mParams.dMeanArea = 0;
