@@ -121,6 +121,7 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 	string centerHash = GeoHash::EncodeLatLon(obs.dlat, obs.dlon, mnGeoHashScale);
 	//QString curHash = QString::fromStdString(centerHash);
 
+	
 	//球中心GeoHash区域生长
 	setAllGeoHashEnable();
 	QStringList enableHashList;
@@ -133,6 +134,7 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 		if (dist <= obs.dMaxRadius)
 			enableHashList.append(curHash);
 	}
+	
 
 	/*
 	QStack<QString> stackHashList;
@@ -188,20 +190,20 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 
 	//计算球的体积和建筑物体积
 	//double dSphereVol = 4.0f * PI * obs.dMaxRadius * obs.dMaxRadius * obs.dMaxRadius / 3.0f;
-	double dSphereVol = calculateSphereSegmentVol(obs.dMaxRadius-obs.dCenterHeight, obs.dMaxRadius);
-	double dBuildingVolInSphere = 0;
-
-	foreach(QString sHa, enableHashList)
-	{
-		foreach(Building bd, mvHashBuildings[sHa])
-		{
-			float dRatio, dSpaceSize;
-			buildingSpaceSizeInSphere(obs.dlat, obs.dlon, obs.dCenterHeight, obs.dMaxRadius, bd, dRatio, dSpaceSize);
-			dBuildingVolInSphere += dSpaceSize;
-		}
-	}
-
-	double dBuildingVolRatio = dBuildingVolInSphere / dSphereVol;
+// 	double dSphereVol = calculateSphereSegmentVol(obs.dMaxRadius-obs.dCenterHeight, obs.dMaxRadius);
+// 	double dBuildingVolInSphere = 0;
+// 
+// 	foreach(QString sHa, enableHashList)
+// 	{
+// 		foreach(Building bd, mvHashBuildings[sHa])
+// 		{
+// 			float dRatio, dSpaceSize;
+// 			buildingSpaceSizeInSphere(obs.dlat, obs.dlon, obs.dCenterHeight, obs.dMaxRadius, bd, dRatio, dSpaceSize);
+// 			dBuildingVolInSphere += dSpaceSize;
+// 		}
+// 	}
+// 
+// 	double dBuildingVolRatio = dBuildingVolInSphere / dSphereVol;
 	
 	//把得到的区域内的建筑物取出来分析
 	double dCurRadius = 0;
@@ -237,7 +239,42 @@ bool BuildingTextureRDF::calculateRdfValues(ObservedSphere& obs)
 		//得到当前的RDF
 		double dRdf = 0;
 		if (mbIsNormailization)
+		{
+			double dBuildingVolRatio = 1.0f;
+			if (dCurRadius > 0)
+			{
+				//球中心GeoHash区域生长
+				setAllGeoHashEnable();
+				QStringList enableHashList_s;	//临时存储最小球体内部的位置
+				enableHashList_s.clear();
+
+				//暴力遍历, 算法复杂度为O(n)
+				foreach(QString curHash, msHashList)
+				{
+					double dist = GeoHash::distanceBetweenGeoHashes(curHash.toStdString(), centerHash);
+					if (dist <= dCurRadius)
+						enableHashList_s.append(curHash);
+				}
+
+				double dSphereVol = calculateSphereSegmentVol(dCurRadius - obs.dCenterHeight, dCurRadius);
+				double dBuildingVolInSphere = 0;
+
+				foreach(QString sHa, enableHashList_s)
+				{
+					foreach(Building bd, mvHashBuildings[sHa])
+					{
+						float dRatio, dSpaceSize;
+						buildingSpaceSizeInSphere(obs.dlat, obs.dlon, obs.dCenterHeight, dCurRadius, bd, dRatio, dSpaceSize);
+						dBuildingVolInSphere += dSpaceSize;
+					}
+				}
+
+				dBuildingVolRatio = dBuildingVolInSphere / dSphereVol;
+			}
+
+			
 			dRdf = 1.0f / dBuildingVolRatio * dSphereShellVolRatio;
+		}
 		else
 			dRdf = dSphereShellVolRatio;
 

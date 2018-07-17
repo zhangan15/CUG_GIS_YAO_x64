@@ -5,6 +5,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+
+	
+
 	double lat = 30.000000;
 	double lon = 114.000000;
 
@@ -13,7 +16,10 @@ int main(int argc, char *argv[])
 
 	double lat1, lon1;
 	GeoHash::DecodeGeoHash(str, lat1, lon1);
+	GeoHash::DecodeGeoHash("ws10kygf", lat1, lon1);
 	cout << lon1 << ", " << lat1 << endl;
+
+	return -1;
 
 	string str_top = GeoHash::CalculateAdjacent(str, GeoHash::Top);
 	string str_bottom = GeoHash::CalculateAdjacent(str, GeoHash::Bottom);
