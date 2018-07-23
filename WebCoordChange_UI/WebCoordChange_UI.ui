@@ -1,0 +1,25 @@
+<UI version="4.0" >
+ <class>WebCoordChange_UIClass</class>
+ <widget class="QDialog" name="WebCoordChange_UIClass" >
+  <property name="objectName" >
+   <string notr="true">WebCoordChange_UIClass</string>
+  </property>
+  <property name="geometry" >
+   <rect>
+	<x>0</x>
+	<y>0</y>
+	<width>600</width>
+	<height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>WebCoordChange_UI</string>
+  </property>
+ </widget>
+ <layoutDefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources>
+   <include location="WebCoordChange_UI.qrc"/>
+ </resources>
+ <connections/>
+</UI>
