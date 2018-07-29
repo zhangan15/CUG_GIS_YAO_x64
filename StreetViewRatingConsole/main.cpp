@@ -450,9 +450,9 @@ int CalculateScoresByOtherAreaScores()
 	//beautiful, boring, depressing, lively, safety, wealthy
 	char* sTrainingFeatureFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_features.csv";
 	char* sTrainingRatedFilename = "H:\\StreetviewFolder\\WuhanStreetview\\scores\\auto_save_scores_beautiful.csv";
-	char* sPredictFeatureFilename = "H:\\StreetviewFolder\\hangzhouStreetview\\features\\object_features.csv";
-	char* slogFilename = "H:\\StreetviewFolder\\hangzhouStreetview\\scores\\training_beautiful.rfa";
-	char* sOutputFilename = "H:\\StreetviewFolder\\hangzhouStreetview\\scores\\total_sim_scores_beautiful.csv";
+	char* sPredictFeatureFilename = "H:/StreetviewFolder/beijing_guangzhou_lost_sv/features/guangzhou_object_features.csv";
+	char* slogFilename = "H:/StreetviewFolder/beijing_guangzhou_lost_sv/scores/guangzhou_training_beautiful.rfa";
+	char* sOutputFilename = "H:/StreetviewFolder/beijing_guangzhou_lost_sv/scores/guangzhou_total_sim_scores_beautiful.csv";
 	
 
 	QList<IMAGE_SCORE> vTotalImageScores;
@@ -695,8 +695,8 @@ int CalculateScoresByOtherAreaScores()
 
 int StatisticFeaturesbyAve()
 {
-	char* sFeatureFilename = "H:\\StreetviewFolder\\hangzhouStreetview\\features\\object_features.csv";
-	char* sOutputFilename = "H:\\StreetviewFolder\\hangzhouStreetview\\scores\\total_features_statistic.csv";
+	char* sFeatureFilename = "H:/StreetviewFolder/beijing_guangzhou_lost_sv/features/guangzhou_object_features.csv";
+	char* sOutputFilename = "H:/StreetviewFolder/beijing_guangzhou_lost_sv/features/guangzhou_total_features_static.csv";
 
 	// ±£´æµ½ImageScores
 	QList<IMAGE_SCORE> vTotalImageScores;
