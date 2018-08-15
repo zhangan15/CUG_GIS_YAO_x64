@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	delete pread; //release memory
 
 	
-	//*****************write a new image*****************
+	//*****************write a new image (FLOAT32)*****************
 	CGDALWrite pwrite;
 	bool brlt = pwrite.init(argv[2], rows, cols, 1, geoTransform, projref, GDT_Float32, 0);
 	if (!brlt)
