@@ -63,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loc2Vec", "Loc2Vec", "{8926
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Geo2Vec", "Geo2Vec\Geo2Vec.vcxproj", "{28C6CFD4-501D-45B2-9B74-5EB1B5F2AFAD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GDALRW", "GDALRW\GDALRW.vcxproj", "{33732D8D-8468-40F5-A630-522E758F65BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -235,6 +237,14 @@ Global
 		{28C6CFD4-501D-45B2-9B74-5EB1B5F2AFAD}.Release|x64.ActiveCfg = Release|x64
 		{28C6CFD4-501D-45B2-9B74-5EB1B5F2AFAD}.Release|x64.Build.0 = Release|x64
 		{28C6CFD4-501D-45B2-9B74-5EB1B5F2AFAD}.Release|x86.ActiveCfg = Release|x64
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Debug|x64.ActiveCfg = Debug|x64
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Debug|x64.Build.0 = Debug|x64
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Debug|x86.ActiveCfg = Debug|Win32
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Debug|x86.Build.0 = Debug|Win32
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Release|x64.ActiveCfg = Release|x64
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Release|x64.Build.0 = Release|x64
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Release|x86.ActiveCfg = Release|Win32
+		{33732D8D-8468-40F5-A630-522E758F65BE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
