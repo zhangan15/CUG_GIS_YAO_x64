@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task>
+  <OrderID>12345</OrderID>
+  <Status>Normal</Status>
+  <Output>
+    <ImageFile>I:/Data/GF_DATA/EXPORT/ndvi.tif</ImageFile>
+  </Output>
+</Task>

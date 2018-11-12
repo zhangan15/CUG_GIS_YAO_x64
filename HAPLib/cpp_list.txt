@@ -1,0 +1,26 @@
+ 驱动器 F 中的卷是 DATA
+ 卷的序列号是 0005-1ECB
+
+ F:\code\HapImage\HAPLib 的目录
+
+2013/03/11  17:05            16,264 gdalfilemanager.cpp
+2012/11/23  15:13             7,133 GDALLib.cpp
+2013/12/16  19:52            14,163 GDALVectorManager.cpp
+2013/07/02  19:20            24,142 hapbegbase.cpp
+2012/11/23  15:13             1,924 hapbegblock.cpp
+2012/11/23  15:13             1,650 hapbegcolumn.cpp
+2012/11/23  15:13               777 hapbegfactory.cpp
+2012/11/23  15:13             3,371 hapbegrow.cpp
+2012/11/23  15:13             8,219 hapbegtBase.cpp
+2012/11/23  15:13               317 hapbegtbbase.cpp
+2012/11/23  15:13                25 hapbegthread.cpp
+2012/11/23  15:13             1,959 hapbegthreadblock.cpp
+2012/11/23  15:13             4,559 hapbegthreadcolumn.cpp
+2012/11/23  15:13             7,411 hapbegthreadrow.cpp
+2012/11/23  15:13               117 hapbegthreadw.cpp
+2012/11/23  15:13             8,449 hapheader.cpp
+2012/11/23  15:13               505 hapioqueue.cpp
+2013/11/26  14:00             1,645 haplib.cpp
+2012/11/23  15:13               429 hapmultiproc.cpp
+              19 个文件        103,059 字节
+               0 个目录 860,652,412,928 可用字节

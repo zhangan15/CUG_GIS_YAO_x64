@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task>
+  <OrderID>12345</OrderID>
+  <Status>Normal</Status>
+  <Percent>100</Percent>
+  <Info>
+    <Content>Finished.</Content>
+  </Info>
+  <Warning>
+    <Content/>
+  </Warning>
+  <Error>
+    <Content/>
+  </Error>
+</Task>
