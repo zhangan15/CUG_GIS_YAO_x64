@@ -49,8 +49,6 @@ bool play(int curX, int curY, int curColor = BLACK)
 		}
 	}
 	
-	searchX = curX;
-	searchY = curY;
 	for(searchX = curX; searchX >= 0, pData[searchX][searchY] == VALID; searchX--)
 	{
 		if (pData[searchX][searchY] == curColor)
@@ -63,8 +61,6 @@ bool play(int curX, int curY, int curColor = BLACK)
 	}
 	
 	//竖着找
-	searchX = curX;
-	searchY = curY;
 	for(searchY = curY; searchY < GRID_SIZE, pData[searchX][searchY] == VALID; searchY++)
 	{
 		if (pData[searchX][searchY] == curColor)
@@ -76,8 +72,6 @@ bool play(int curX, int curY, int curColor = BLACK)
 		}
 	}
 	
-	searchX = curX;
-	searchY = curY;
 	for(searchY = curY; searchY >= 0, pData[searchX][searchY] == VALID; searchY--)
 	{
 		if (pData[searchX][searchY] == curColor)
@@ -90,8 +84,6 @@ bool play(int curX, int curY, int curColor = BLACK)
 	}
 	
 	//斜着找
-	searchX = curX;
-	searchY = curY;
 	for(searchX = curX,searchY = curY; searchX < GRID_SIZE, searchY < GRID_SIZE, pData[searchX][searchY] == VALID; searchX++,searchY++)
 	{			
 		if (pData[searchX][searchY] == curColor)
@@ -104,8 +96,6 @@ bool play(int curX, int curY, int curColor = BLACK)
 		
 	}
 	
-	searchX = curX;
-	searchY = curY;
 	for(searchX = curX,searchY = curY; searchX >= 0, searchY >= 0, pData[searchX][searchY] == VALID; searchX--,searchY--)
 	{			
 		if (pData[searchX][searchY] == curColor)
