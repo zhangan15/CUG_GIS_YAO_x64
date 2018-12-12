@@ -130,8 +130,8 @@ int main()
 			pData[i][j] = VALID;
 		
 	//左上角右下角分别为黑和白
-	pData[0][GRID_SIZE-1] = BLACK;
-	pData[GRID_SIZE-1][0] = WHITE;
+	pData[0][0] = BLACK;
+	pData[GRID_SIZE-1][GRID_SIZE-1] = WHITE;
 	
 	int curColor = BLACK;	
 	int curX, curY;
