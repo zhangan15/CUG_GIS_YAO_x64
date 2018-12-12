@@ -134,7 +134,7 @@ void replay()
 	{
 		for (int j=0; j<GRID_SIZE; j++)
 		{
-			pData[i][j] == VALID;				
+			pData[i][j] = VALID;				
 		}
 	}
 	
