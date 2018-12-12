@@ -152,31 +152,6 @@ void replay()
 	pData[GRID_SIZE-1][GRID_SIZE-1] = WHITE;
 }
 
-void whoWinTheGame()
-{
-	int nWhiteCount = 0;
-	int nBlackCount = 0;
-	
-	for (int i=0; i<GRID_SIZE; i++)
-	{
-		for (int j=0; j<GRID_SIZE; j++)
-		{
-			if (pData[i][j] == WHITE)
-				nWhiteCount++;
-			if (pData[i][j] == BLACK)
-				nBlackCount++;
-		}
-	}
-	
-	if(nWhiteCount == nBlackCount)
-		cout << "WHITE & BLACK ended in a draw." <<endl;
-	else if(nWhiteCount>nBlackCount)
-		cout << "WHITE WIN!" << endl;
-	else
-		cout << "BLACK WIN!" << endl;
-	
-}
-
 //计算当前白黑比
 double calCurrentWhitePerBlack()
 {
@@ -202,6 +177,19 @@ double calCurrentWhitePerBlack()
 		return 1;
 	
 	double WhitePerBlack = (double)nWhiteCount/(double)nBlackCount;
+}
+
+void whoWinTheGame()
+{
+	double dWBRatio = calCurrentWhitePerBlack();
+	
+	if(dWBRatio == 1)
+		cout << "WHITE & BLACK ended in a draw." <<endl;
+	else if(dWBRatio > 1)
+		cout << "WHITE WIN!" << endl;
+	else
+		cout << "BLACK WIN!" << endl;
+	
 }
 
 void AI_findTheBestState(int curColor, int& selectX, int& selectY)
