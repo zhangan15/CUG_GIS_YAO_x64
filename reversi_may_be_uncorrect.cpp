@@ -270,9 +270,6 @@ double calCurrentWhitePerBlack(int** &pInputData)
 	if (nBlackCount == 0)
 		return -1;
 
-	if (nWhiteCount == 0)
-		return 1;
-
 	double WhitePerBlack = (double)nWhiteCount / (double)nBlackCount;
 	return WhitePerBlack;
 }
@@ -335,7 +332,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 	{
 		for (j = 0; j < GRID_SIZE; j++)
 		{
-			if (pState[i][j] > 0)
+			if (pState[i][j] > 1)
 				bflag = false;
 		}
 	}
@@ -422,8 +419,8 @@ int main()
 			whoWinTheGame();
 
 			//重玩
-			replay();
-			curColor = BLACK;
+			//replay();
+			//curColor = BLACK;
 		}
 
 		if (curColor == WHITE)
@@ -456,12 +453,12 @@ int main()
 
 			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
 
-			//play(pData, AI_x, AI_y, curColor);
-
-			//then display and continue the loop
-			//display();	//输出
-			//curColor = BLACK;
-			//continue;
+// 			play(pData, AI_x, AI_y, curColor);
+// 
+// 			//then display and continue the loop
+// 			display();	//输出
+// 			curColor = BLACK;
+// 			continue;
 		}
 		
 		
