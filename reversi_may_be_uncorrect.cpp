@@ -456,12 +456,12 @@ int main()
 
 			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
 
-			play(pData, AI_x, AI_y, curColor);
+			//play(pData, AI_x, AI_y, curColor);
 
 			//then display and continue the loop
-			display();	//输出
-			curColor = BLACK;
-			continue;
+			//display();	//输出
+			//curColor = BLACK;
+			//continue;
 		}
 		
 		
