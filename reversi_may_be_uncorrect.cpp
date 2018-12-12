@@ -332,7 +332,9 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 	{
 		for (j = 0; j < GRID_SIZE; j++)
 		{
-			if (pState[i][j] > 1)
+			if (pState[i][j] > 1 && curColor == WHITE)
+				bflag = false;
+			if (pState[i][j] < 1 && curColor == BLACK)
 				bflag = false;
 		}
 	}
