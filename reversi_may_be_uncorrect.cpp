@@ -10,8 +10,8 @@
 using namespace std;
 
 #define VALID 0 	//可下棋区域
-#define WHITE 1		//白棋
-#define BLACK 2		//黑棋
+#define WHITE 1	//白棋
+#define BLACK 2	//黑棋
 
 #define GRID_SIZE 8	//棋盘大小
 
