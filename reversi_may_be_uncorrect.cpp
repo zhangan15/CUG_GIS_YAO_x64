@@ -298,7 +298,7 @@ int main()
 			AI_findTheBestState(curColor, AI_x, AI_y);
 			play(pData, AI_x, AI_y, curColor);
 			
-			//then display continue the loop
+			//then display and continue the loop
 			display();	//输出
 			curColor = BLACK;
 			continue;
