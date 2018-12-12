@@ -5,13 +5,13 @@
 #include <iostream>
 using namespace std;
 
-#define VALID 0
-#define WHITE 1
-#define BLACK 2
+#define VALID 0 	//可下棋区域
+#define WHITE 1		//白棋
+#define BLACK 2		//黑棋
 
 #define GRID_SIZE 8	//棋盘大小
 
-int pData[GRID_SIZE][GRID_SIZE]; //棋盘
+int pData[GRID_SIZE][GRID_SIZE]; //下棋存储在二维数组中 8*8，0 - 未落子区域，1 - 白棋区域，2 - 黑棋区域
 
 void display()	//输出pData并显示
 {
