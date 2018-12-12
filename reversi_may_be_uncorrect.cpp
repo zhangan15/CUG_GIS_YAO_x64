@@ -159,8 +159,7 @@ void whoWinTheGame()
 	
 	if(nWhiteCount == nBlackCount)
 		cout << "WHITE & BLACK ended in a draw." <<endl;
-	
-	if(nWhiteCount>nBlackCount)
+	else if(nWhiteCount>nBlackCount)
 		cout << "WHITE WIN!" << endl;
 	else
 		cout << "BLACK WIN!" << endl;
