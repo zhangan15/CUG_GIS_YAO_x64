@@ -459,7 +459,7 @@ int main()
 // 
 // 			//then display and continue the loop
 // 			display();	//输出
-// 			curColor = BLACK;
+// 			curColor = WHITE;
 // 			continue;
 		}
 		
