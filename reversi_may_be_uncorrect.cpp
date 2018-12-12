@@ -224,7 +224,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 		}
 	}
 	
-	//如果是白棋，则白黑比越高越好；如果是黑棋，则白黑比越低越好
+	//如果是白棋，则白黑比越高越好
 	selectX = selectY = 0;
 	double dCurState;
 	if(curColor == WHITE)
@@ -244,6 +244,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 		}
 	}
 	
+	//如果是黑棋，则白黑比越低越好
 	if(curColor == BLACK)
 	{
 		dCurState = (double)GRID_SIZE*GRID_SIZE;
