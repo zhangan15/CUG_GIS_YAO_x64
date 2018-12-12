@@ -248,7 +248,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 		{
 			for (j=0; j<GRID_SIZE; j++)
 			{
-				if(1.0f/pState[i][j]=<dCurState)
+				if(1.0f/pState[i][j]<=dCurState)
 				{
 					dCurState = pState[i][j];
 					selectX = i;
