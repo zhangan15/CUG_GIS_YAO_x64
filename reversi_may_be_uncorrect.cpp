@@ -36,83 +36,85 @@ void display()	//输出pData并显示
 	}
 }
 
+//核心算法，pInputData为棋盘数据
+//将二维数组指针引用，可修改二维数组内容
 bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 {
 	if (curX < 0 || curY < 0 || curX >= GRID_SIZE || curY >= GRID_SIZE)
 		return false;
 	
-	if (pData[curX][curY] == VALID)
+	if (pInputData[curX][curY] == VALID)
 		return false;
 	
-	//在这里编写黑白棋的逻辑，更新pData
+	//在这里编写黑白棋的逻辑，更新pInputData
 	int searchX = curX, searchY = curY;
 	int i, j;
 	
 	//横着找
-	for(searchX = curX; searchX < GRID_SIZE || pData[searchX][searchY] == VALID; searchX++)
+	for(searchX = curX; searchX < GRID_SIZE || pInputData[searchX][searchY] == VALID; searchX++)
 	{
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curX; i<searchX; i++)
-				pData[i][searchY] = curColor;
+				pInputData[i][searchY] = curColor;
 			
 			break;
 		}
 	}
 	
-	for(searchX = curX; searchX >= 0 || pData[searchX][searchY] == VALID; searchX--)
+	for(searchX = curX; searchX >= 0 || pInputData[searchX][searchY] == VALID; searchX--)
 	{
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curX; i>=searchX; i--)
-				pData[i][searchY] = curColor;
+				pInputData[i][searchY] = curColor;
 			
 			break;
 		}
 	}
 	
 	//竖着找
-	for(searchY = curY; searchY < GRID_SIZE || pData[searchX][searchY] == VALID; searchY++)
+	for(searchY = curY; searchY < GRID_SIZE || pInputData[searchX][searchY] == VALID; searchY++)
 	{
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curY; i<searchY; i++)
-				pData[searchX][i] = curColor;
+				pInputData[searchX][i] = curColor;
 			
 			break;
 		}
 	}
 	
-	for(searchY = curY; searchY >= 0 || pData[searchX][searchY] == VALID; searchY--)
+	for(searchY = curY; searchY >= 0 || pInputData[searchX][searchY] == VALID; searchY--)
 	{
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curY; i>=searchY; i--)
-				pData[searchX][i] = curColor;
+				pInputData[searchX][i] = curColor;
 			
 			break;
 		}
 	}
 	
 	//斜着找
-	for(searchX = curX,searchY = curY; searchX < GRID_SIZE || searchY < GRID_SIZE || pData[searchX][searchY] == VALID; searchX++,searchY++)
+	for(searchX = curX,searchY = curY; searchX < GRID_SIZE || searchY < GRID_SIZE || pInputData[searchX][searchY] == VALID; searchX++,searchY++)
 	{			
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curX, j=curY; i<searchX, j<searchY; i++, j++)
-				pData[i][j] = curColor;
+				pInputData[i][j] = curColor;
 			
 			break;
 		}	
 		
 	}
 	
-	for(searchX = curX,searchY = curY; searchX >= 0 || searchY >= 0 || pData[searchX][searchY] == VALID; searchX--,searchY--)
+	for(searchX = curX,searchY = curY; searchX >= 0 || searchY >= 0 || pInputData[searchX][searchY] == VALID; searchX--,searchY--)
 	{			
-		if (pData[searchX][searchY] == curColor)
+		if (pInputData[searchX][searchY] == curColor)
 		{
 			for (i=curX, j=curY; i>=searchX, j>=searchY; i--, j--)
-				pData[i][j] = curColor;
+				pInputData[i][j] = curColor;
 			
 			break;
 		}	
