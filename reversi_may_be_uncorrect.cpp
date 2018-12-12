@@ -133,6 +133,7 @@ int main()
 	pData[0][0] = BLACK;
 	pData[GRID_SIZE-1][GRID_SIZE-1] = WHITE;
 	
+	// 当前落子颜色
 	int curColor = BLACK;	
 	int curX, curY;
 	while (1)
@@ -146,6 +147,8 @@ int main()
 		if(bResult)
 		{
 			display();	//输出
+			
+			// 更换当前落子颜色
 			if (curColor == BLACK) curColor = WHITE;
 			if (curColor == WHITE) curColor = BLACK;
 		}
