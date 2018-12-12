@@ -25,11 +25,11 @@ void display()	//输出pData并显示
 		for(int j=0; j<GRID_SIZE; j++)
 		{
 			if(pData[i][j] == BLACK)
-				cout << "●" << "\t";
+				cout << "●" << " ";
 			if(pData[i][j] == WHITE)
-				cout << "○" << "\t";
+				cout << "○" << " ";
 			if(pData[i][j] == VALID)
-				cout << "+" << "\t";
+				cout << "+" << " ";
 		}
 		
 		cout<<endl;
