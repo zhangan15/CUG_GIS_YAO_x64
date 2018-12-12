@@ -4,6 +4,8 @@
 //仅供地大信工2018级思路参考使用
 //抄袭0分！！！
 
+//更新了一个小AI下白棋 2018-12-13 00:00
+
 #include <iostream>
 using namespace std;
 
@@ -21,13 +23,20 @@ void display()	//输出pData并显示
 	for(int i=0; i<GRID_SIZE; i++)
 	{
 		for(int j=0; j<GRID_SIZE; j++)
-			cout << pData[i][j] << "\t";
+		{
+			if(pData[i][j] == BLACK)
+				cout << "●" << "\t";
+			if(pData[i][j] == WHITE)
+				cout << "○" << "\t";
+			if(pData[i][j] == VALID)
+				cout << "+" << "\t";
+		}
 		
 		cout<<endl;
 	}
 }
 
-bool play(int curX, int curY, int curColor = BLACK)
+bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 {
 	if (curX < 0 || curY < 0 || curX >= GRID_SIZE || curY >= GRID_SIZE)
 		return false;
@@ -168,6 +177,100 @@ void whoWinTheGame()
 	
 }
 
+//计算当前白黑比
+double calCurrentWhitePerBlack()
+{
+	//计算当前白黑比
+	int nWhiteCount = 0;
+	int nBlackCount = 0;
+	
+	for (int i=0; i<GRID_SIZE; i++)
+	{
+		for (int j=0; j<GRID_SIZE; j++)
+		{
+			if (pData[i][j] == WHITE)
+				nWhiteCount++;
+			if (pData[i][j] == BLACK)
+				nBlackCount++;
+		}
+	}
+	
+	if(nBlackCount == 0)
+		return -1;
+	
+	if(nWhiteCount == 0)
+		return 1;
+	
+	double WhitePerBlack = (double)nWhiteCount/(double)nBlackCount;
+}
+
+void AI_findTheBestState(int curColor, int& selectX, int& selectY)
+{
+	int i, j;
+	
+	//存储当前位置的最佳状态
+	int pState[GRID_SIZE][GRID_SIZE];
+	int pBkupData[GRID_SIZE][GRID_SIZE];
+	
+	
+	for (i=0; i<GRID_SIZE; i++)
+	{
+		for (j=0; j<GRID_SIZE; j++)
+		{
+			if(pData[i][j] != VALID)
+			{
+				pState[i][j] = -2;
+				continue;
+			}
+			
+			//复制当前数据
+			for (int m=0; m<GRID_SIZE; m++)
+				for(int n=0; m<GRID_SIZE; n++)
+					pBkupData[m][n] = pData[m][n];
+			
+			//若在当前下棋的白黑比
+			pState[i][j] = play(pBkupData, i, j, curColor);
+		}
+	}
+	
+	//如果是白棋，则白黑比越高越好；如果是黑棋，则白黑比越低越好
+	selectX = selectY = 0;
+	double dCurState;
+	if(curColor == WHITE)
+	{
+		dCurState = -2;
+		for (i=0; i<GRID_SIZE; i++)
+		{
+			for (j=0; j<GRID_SIZE; j++)
+			{
+				if(pState[i][j]>=dCurState)
+				{
+					dCurState = pState[i][j];
+					selectX = i;
+					selectY = j;
+				}
+			}
+		}
+	}
+	
+	if(curColor == BLACK)
+	{
+		dCurState = (double)GRID_SIZE*GRID_SIZE;
+		for (i=0; i<GRID_SIZE; i++)
+		{
+			for (j=0; j<GRID_SIZE; j++)
+			{
+				if(1.0f/pState[i][j]=<dCurState)
+				{
+					dCurState = pState[i][j];
+					selectX = i;
+					selectY = j;
+				}
+			}
+		}
+	}
+}
+
 int main()
 {
 	int i, j;
@@ -184,11 +287,37 @@ int main()
 	int curX, curY;
 	while (1)
 	{
+		//判断游戏是否结束
+		if(isEndGame())
+		{
+			//输出赢家
+			whoWinTheGame();
+			
+			//重玩
+			replay();
+			curColor = BLACK;
+		}
+		
+		//如果执白时，可写个逻辑让计算机自动寻找最优位置（小AI，鼓励实现）
+		if(curColor == WHITE)
+		{
+			cout << "AI-WHITE Running..."<<endl;
+			//RUN MY AI HERE!
+			int AI_x, AI_y;
+			AI_findTheBestState(curColor, AI_x, AI_y);
+			play(pData, AI_x, AI_y, curColor);
+			
+			//then display continue the loop
+			display();	//输出
+			curColor = BLACK;
+			continue;
+		}
+		
 		cout << "Input Location (X, Y): "<<endl;
 		cin >> curX >> curY;
 		
 		//修改pData
-		bool bResult = play(curX, curY, curColor);
+		bool bResult = play(pData, curX, curY, curColor);
 		
 		if(bResult)
 		{
@@ -200,17 +329,6 @@ int main()
 		}
 		if(!bResult)
 			cout<<"Input X and Y Error!"<<endl;
-		
-		//判断游戏是否结束
-		if(isEndGame())
-		{
-			//输出赢家
-			whoWinTheGame();
-			
-			//重玩
-			replay();
-			curColor = BLACK;
-		}
 		
 	}
 	
