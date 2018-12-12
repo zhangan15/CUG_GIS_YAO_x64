@@ -412,8 +412,11 @@ int main()
 	// 当前落子颜色
 	int curColor = BLACK;
 	int curX, curY;
+	int nGameCount = 0;
 	while (1)
 	{
+		nGameCount++;
+		cout << "Current Game is No. " << nGameCount << endl;
 		//判断游戏是否结束
 		if (isEndGame())
 		{
@@ -489,4 +492,3 @@ int main()
 
 	return 0;
 }
-
