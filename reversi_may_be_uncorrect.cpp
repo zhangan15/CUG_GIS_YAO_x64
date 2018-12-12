@@ -215,10 +215,11 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 			
 			//复制当前数据
 			for (int m=0; m<GRID_SIZE; m++)
-				for(int n=0; m<GRID_SIZE; n++)
+				for(int n=0; n<GRID_SIZE; n++)
 					pBkupData[m][n] = pData[m][n];	//复制现有棋盘黑白分布数据
 			
 			//在备份棋盘上模拟下棋，若在当前下棋的白黑比
+			//可得到下棋的状态分布矩阵
 			pState[i][j] = play(pBkupData, i, j, curColor);
 		}
 	}
