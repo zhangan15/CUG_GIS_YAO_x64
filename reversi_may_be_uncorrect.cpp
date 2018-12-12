@@ -112,6 +112,61 @@ bool play(int curX, int curY, int curColor = BLACK)
 	return true;
 }
 
+bool isEndGame()
+{
+	for (int i=0; i<GRID_SIZE; i++)
+	{
+		for (int j=0; j<GRID_SIZE; j++)
+		{
+			if (pData[i][j] == VALID)
+				return false;
+		}
+	}
+	
+	return true;
+}
+
+void replay()
+{
+	for (int i=0; i<GRID_SIZE; i++)
+	{
+		for (int j=0; j<GRID_SIZE; j++)
+		{
+			pData[i][j] == VALID;				
+		}
+	}
+	
+	//左上角右下角分别为黑和白
+	pData[0][0] = BLACK;
+	pData[GRID_SIZE-1][GRID_SIZE-1] = WHITE;
+}
+
+void whoWinTheGame()
+{
+	int nWhiteCount = 0;
+	int nBlackCount = 0;
+	
+	for (int i=0; i<GRID_SIZE; i++)
+	{
+		for (int j=0; j<GRID_SIZE; j++)
+		{
+			if (pData[i][j] == WHITE)
+				nWhiteCount++;
+			if (pData[i][j] == BLACK)
+				nBlackCount++;
+		}
+	}
+	
+	if(nWhiteCount == nBlackCount)
+		cout << "WHITE & BLACK ended in a draw." <<endl;
+	
+	if(nWhiteCount>nBlackCount)
+		cout << "WHITE WIN!" << endl;
+	else
+		cout << "BLACK WIN!" << endl;
+	
+}
+
 int main()
 {
 	int i, j;
@@ -144,6 +199,17 @@ int main()
 		}
 		if(!bResult)
 			cout<<"Input X and Y Error!"<<endl;
+		
+		//判断游戏是否结束
+		if(isEndGame())
+		{
+			//输出赢家
+			whoWinTheGame();
+			
+			//重玩
+			replay();
+			curColor = BLACK;
+		}
 		
 	}
 	
