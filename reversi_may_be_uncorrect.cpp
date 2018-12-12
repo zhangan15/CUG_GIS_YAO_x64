@@ -437,6 +437,9 @@ int main()
 			//RUN MY AI HERE!
 			int AI_x, AI_y;
 			AI_findTheBestState(curColor, AI_x, AI_y);
+
+			cout << "AI-WHITE location is (" << AI_x << ", " << AI_y << ")" << endl;
+
 			play(pData, AI_x, AI_y, curColor);
 
 			//then display and continue the loop
@@ -455,12 +458,12 @@ int main()
 
 			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
 
-// 			play(pData, AI_x, AI_y, curColor);
-// 
-// 			//then display and continue the loop
-// 			display();	//输出
-// 			curColor = WHITE;
-// 			continue;
+			play(pData, AI_x, AI_y, curColor);
+
+			//then display and continue the loop
+			display();	//输出
+			curColor = WHITE;
+			continue;
 		}
 		
 		
