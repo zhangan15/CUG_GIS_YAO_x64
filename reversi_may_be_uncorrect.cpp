@@ -14,7 +14,7 @@ using namespace std;
 #define WHITE 1	//白棋
 #define BLACK -1	//黑棋
 
-#define GRID_SIZE 8	//棋盘大小
+#define GRID_SIZE 10	//棋盘大小
 
 int** pData = NULL; //下棋存储在二维数组中 8*8，0 - 未落子区域，1 - 白棋区域，2 - 黑棋区域
 
@@ -414,9 +414,7 @@ int main()
 	int curX, curY;
 	int nGameCount = 0;
 	while (1)
-	{
-		nGameCount++;
-		cout << "Current Game is No. " << nGameCount << endl;
+	{		
 		//判断游戏是否结束
 		if (isEndGame())
 		{
@@ -426,7 +424,11 @@ int main()
 			//重玩
 			//replay();
 			//curColor = BLACK;
+			return 0;
 		}
+
+		nGameCount++;
+		cout << "Current Game is No. " << nGameCount << endl;
 
 		if (curColor == WHITE)
 			cout << "Input Location " << "WHITE" << " (X, Y): " << endl;
