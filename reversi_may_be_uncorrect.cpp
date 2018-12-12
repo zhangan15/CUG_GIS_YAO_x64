@@ -1,8 +1,3 @@
-// TestBlackWhite.cpp : 定义控制台应用程序的入口点。
-//
-
-#include "stdafx.h"
-
 //C++黑白棋
 //未测试，不一定正确
 //记事本手写代码，未经编译
@@ -12,6 +7,7 @@
 //更新了一个小AI下白棋 2018-12-13 00:00
 
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define VALID 0 	//可下棋区域
@@ -104,7 +100,7 @@ bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 
 		if (pInputData[searchX][searchY] == curColor)
 		{
-			for (i = curX; i > searchX; i--)
+			for (i = curX; i >= searchX; i--)
 				pInputData[i][searchY] = curColor;
 
 			//break;
@@ -133,7 +129,7 @@ bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 
 		if (pInputData[searchX][searchY] == curColor)
 		{
-			for (i = curY; i > searchY; i--)
+			for (i = curY; i >= searchY; i--)
 				pInputData[searchX][i] = curColor;
 
 			//break;
@@ -163,7 +159,7 @@ bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 
 		if (pInputData[searchX][searchY] == curColor)
 		{
-			for (i = curX, j = curY; i > searchX && j > searchY; i--, j--)
+			for (i = curX, j = curY; i >= searchX && j >= searchY; i--, j--)
 				pInputData[i][j] = curColor;
 
 			//break;
@@ -178,7 +174,7 @@ bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 
 		if (pInputData[searchX][searchY] == curColor)
 		{
-			for (i = curX, j = curY; i < searchX && j > searchY; i++, j--)
+			for (i = curX, j = curY; i < searchX && j >= searchY; i++, j--)
 				pInputData[i][j] = curColor;
 
 			//break;
@@ -193,7 +189,7 @@ bool play(int**& pInputData, int curX, int curY, int curColor = BLACK)
 
 		if (pInputData[searchX][searchY] == curColor)
 		{
-			for (i = curX, j = curY; i > searchX && j < searchY; i--, j++)
+			for (i = curX, j = curY; i >= searchX && j < searchY; i--, j++)
 				pInputData[i][j] = curColor;
 
 			//break;
@@ -233,7 +229,7 @@ void replay()
 // 	pData[0][0] = BLACK;
 // 	pData[GRID_SIZE - 1][GRID_SIZE - 1] = WHITE;
 
-	srand(time_t(NULL));
+	srand((unsigned)time(NULL));
 	//随机给位置
 	pData[rand() % GRID_SIZE][rand() % GRID_SIZE] = BLACK;
 
@@ -331,6 +327,36 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 		}
 	}
 
+	clearMemory(pBkupData);
+
+	//如果所有状态全部<=0，则随机选个位置
+	bool bflag = true;
+	for (i = 0; i < GRID_SIZE; i++)
+	{
+		for (j = 0; j < GRID_SIZE; j++)
+		{
+			if (pState[i][j] > 0)
+				bflag = false;
+		}
+	}
+
+	if (bflag)
+	{
+		srand((unsigned)time(NULL));
+		while (1)
+		{
+			int rnd_x = rand() % GRID_SIZE;
+			int rnd_y = rand() % GRID_SIZE;
+			if (pData[rnd_x][rnd_y] != VALID)
+				continue;
+
+			selectX = rnd_x;
+			selectY = rnd_y;
+			return;
+		}
+	}
+
+
 	//如果是白棋，则白黑比越高越好
 	selectX = selectY = 0;
 	double dCurState;
@@ -375,7 +401,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 		}
 	}
 
-	clearMemory(pBkupData);
+	
 }
 
 int main()
@@ -421,22 +447,22 @@ int main()
 		}
 
 		//如果执黑时，给出推荐位置
-// 		if (curColor == BLACK)
-// 		{
-// 			cout << "AI-WHITE Running..." << endl;
-// 			//RUN MY AI HERE!
-// 			int AI_x, AI_y;
-// 			AI_findTheBestState(curColor, AI_x, AI_y);
-// 
-// 			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
-// 
-// 			play(pData, AI_x, AI_y, curColor);
-// 
-// 			//then display and continue the loop
-// 			display();	//输出
-// 			curColor = BLACK;
-// 			continue;
-// 		}
+		if (curColor == BLACK)
+		{
+			cout << "AI-WHITE Running..." << endl;
+			//RUN MY AI HERE!
+			int AI_x, AI_y;
+			AI_findTheBestState(curColor, AI_x, AI_y);
+
+			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
+
+			play(pData, AI_x, AI_y, curColor);
+
+			//then display and continue the loop
+			display();	//输出
+			curColor = BLACK;
+			continue;
+		}
 		
 		
 		cin >> curX >> curY;
