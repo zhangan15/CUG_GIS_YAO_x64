@@ -58,7 +58,7 @@ void display()	//输出pData并显示
 				cout << "+" << "\t";
 		}
 
-		cout << endl;
+		cout << endl << endl;
 	}
 }
 
@@ -328,16 +328,30 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 
 	//如果所有状态全部<=0，则随机选个位置
 	bool bflag = true;
+	double sum_state = 0;
+	int nValidStateCount = 0;
+	double tmp_state = 0;
 	for (i = 0; i < GRID_SIZE; i++)
 	{
 		for (j = 0; j < GRID_SIZE; j++)
 		{
 			if (pState[i][j] > 1 && curColor == WHITE)
 				bflag = false;
-			if (pState[i][j] < 1 && curColor == BLACK)
+			if (1.0f / pState[i][j] > 1 && curColor == BLACK)
 				bflag = false;
+
+			if (pState[i][j] > 0)
+			{
+				tmp_state = pState[i][j];
+				sum_state += pState[i][j];
+				nValidStateCount++;
+			}
 		}
 	}
+
+	//如果全局是一样的权重，也随机选位置
+	if (abs(tmp_state - sum_state / (double)nValidStateCount) <= 10e-6 && nValidStateCount > 2)
+		bflag = true;
 
 	if (bflag)
 	{
@@ -382,7 +396,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 	//如果是黑棋，则白黑比越低越好
 	if (curColor == BLACK)
 	{
-		dCurState = (double)GRID_SIZE*GRID_SIZE;
+		dCurState = -2; // (double)GRID_SIZE*GRID_SIZE;
 		for (i = 0; i < GRID_SIZE; i++)
 		{
 			for (j = 0; j < GRID_SIZE; j++)
@@ -390,9 +404,9 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 				if (pData[i][j] != VALID)
 					continue;
 
-				if (1.0f / pState[i][j] < dCurState && 1.0f / pState[i][j] >= 0)
+				if (1.0f / pState[i][j] > dCurState /*&& 1.0f / pState[i][j] >= 0*/)
 				{
-					dCurState = pState[i][j];
+					dCurState = 1.0f / pState[i][j];
 					selectX = i;
 					selectY = j;
 				}
@@ -427,6 +441,7 @@ int main()
 			break;
 		}
 
+		system("cls");
 		nGameCount++;
 		cout << "Current Game is No. " << nGameCount << endl;
 
@@ -456,19 +471,19 @@ int main()
 		//如果执黑时，给出推荐位置
 		if (curColor == BLACK)
 		{
-			cout << "AI-WHITE Running..." << endl;
+			cout << "AI-BLACK Running..." << endl;
 			//RUN MY AI HERE!
 			int AI_x, AI_y;
 			AI_findTheBestState(curColor, AI_x, AI_y);
 
 			cout << "Recommendation location is (" << AI_x << ", " << AI_y << ")" << endl;
 
-			play(pData, AI_x, AI_y, curColor);
+			//play(pData, AI_x, AI_y, curColor);
 
 			//then display and continue the loop
-			display();	//输出
-			curColor = WHITE;
-			continue;
+			//display();	//输出
+			//curColor = WHITE;
+			//continue;
 		}
 		
 		
@@ -494,3 +509,4 @@ int main()
 
 	return 0;
 }
+
