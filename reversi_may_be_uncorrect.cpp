@@ -441,7 +441,6 @@ int main()
 			break;
 		}
 
-		system("cls");
 		nGameCount++;
 		cout << "Current Game is No. " << nGameCount << endl;
 
