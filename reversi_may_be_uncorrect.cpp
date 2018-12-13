@@ -350,7 +350,7 @@ void AI_findTheBestState(int curColor, int& selectX, int& selectY)
 	}
 
 	//如果全局是一样的权重，也随机选位置
-	if (abs(tmp_state - sum_state / (double)nValidStateCount) <= 10e-6 && nValidStateCount > 2)
+	if (abs(tmp_state - sum_state / (double)nValidStateCount) <= 10e-10 && nValidStateCount > 2)
 		bflag = true;
 
 	if (bflag)
