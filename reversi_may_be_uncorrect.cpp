@@ -424,7 +424,7 @@ int main()
 			//重玩
 			//replay();
 			//curColor = BLACK;
-			return 0;
+			break;
 		}
 
 		nGameCount++;
