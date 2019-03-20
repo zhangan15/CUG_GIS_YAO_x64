@@ -450,9 +450,9 @@ int CalculateScoresByOtherAreaScores()
 	//beautiful, boring, depressing, lively, safety, wealthy
 	char* sTrainingFeatureFilename = "H:\\StreetviewFolder\\WuhanStreetview\\object_features.csv";
 	char* sTrainingRatedFilename = "H:\\StreetviewFolder\\WuhanStreetview\\scores\\auto_save_scores_wealthy.csv";
-	char* sPredictFeatureFilename = "H:/StreetviewFolder/shenzhenStreetview_NEW_ALL/features/shenzhen_object_features.csv";
-	char* slogFilename = "H:/StreetviewFolder/shenzhenStreetview_NEW_ALL/scores/shenzhen_training_wealthy.rfa";
-	char* sOutputFilename = "H:/StreetviewFolder/shenzhenStreetview_NEW_ALL/scores/shenzhen_total_sim_scores_wealthy.csv";
+	char* sPredictFeatureFilename = "M:\\ShanghaiStreetView\\shanghai_photo\\shanghai_object_features.csv";
+	char* slogFilename = "M:\\ShanghaiStreetView\\shanghai_photo\\shanghai_training_wealthy.rfa";
+	char* sOutputFilename = "M:\\ShanghaiStreetView\\shanghai_photo\\shanghai_total_sim_scores_wealthy.csv";
 	
 
 	QList<IMAGE_SCORE> vTotalImageScores;
@@ -549,6 +549,8 @@ int CalculateScoresByOtherAreaScores()
 	if (nPredictFeatureDimension != nFeatureDimension)
 	{
 		cout << "Error: The predict feature size is not same as input feature size." << endl;
+		cout << "Predict Feature Dimension = " << nPredictFeatureDimension << endl;
+		cout << "Input Feature Dimension = " << nFeatureDimension << endl;
 		return -5;
 	}
 	cout << "Loaded predict features success." << endl;
@@ -695,8 +697,8 @@ int CalculateScoresByOtherAreaScores()
 
 int StatisticFeaturesbyAve()
 {
-	char* sFeatureFilename = "H:/StreetviewFolder/shenzhenStreetview_NEW_ALL/features/shenzhen_object_features.csv";
-	char* sOutputFilename = "H:/StreetviewFolder/shenzhenStreetview_NEW_ALL/scores/shenzhen_total_features_static.csv";
+	char* sFeatureFilename = "M:/ShanghaiStreetView/shanghai_photo/shanghai_object_features.csv";
+	char* sOutputFilename = "M:/ShanghaiStreetView/shanghai_photo/shanghai_total_features_static.csv";
 
 	// 保存到ImageScores
 	QList<IMAGE_SCORE> vTotalImageScores;
@@ -810,7 +812,7 @@ int StatisticFeaturesbyAve()
 int main(int argc, char *argv[])
 {	
 	//统计各类地物占比
-	// StatisticFeaturesbyAve();
+	//StatisticFeaturesbyAve();
 	//心理学感知
 	CalculateScoresByOtherAreaScores();
 	return 1;

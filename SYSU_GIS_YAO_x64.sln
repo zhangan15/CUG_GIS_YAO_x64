@@ -75,6 +75,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeoInversionApp", "GeoInver
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestOpenNN", "TestOpenNN\TestOpenNN.vcxproj", "{59CD79C2-728C-4367-B9FD-775659EED812}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Apriori_Associate_Rule_Mining", "Apriori_Associate_Rule_Mining\Apriori_Associate_Rule_Mining.vcxproj", "{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -285,6 +287,14 @@ Global
 		{59CD79C2-728C-4367-B9FD-775659EED812}.Release|x64.ActiveCfg = Release|x64
 		{59CD79C2-728C-4367-B9FD-775659EED812}.Release|x64.Build.0 = Release|x64
 		{59CD79C2-728C-4367-B9FD-775659EED812}.Release|x86.ActiveCfg = Release|x64
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Debug|x64.ActiveCfg = Debug|x64
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Debug|x64.Build.0 = Debug|x64
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Debug|x86.ActiveCfg = Debug|Win32
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Debug|x86.Build.0 = Debug|Win32
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Release|x64.ActiveCfg = Release|x64
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Release|x64.Build.0 = Release|x64
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Release|x86.ActiveCfg = Release|Win32
+		{7EF32EE8-12F5-4C83-821A-B8DDCED2AC40}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
