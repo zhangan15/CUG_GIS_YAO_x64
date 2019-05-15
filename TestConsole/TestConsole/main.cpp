@@ -9,8 +9,8 @@
 #include <iostream>
 using namespace std;
 
-#include "D:/Code/SYSU_GIS_YAO_x64/thirdlib/dlib/include/dlib/data_io.h"
-using namespace dlib;
+//#include "D:/Code/SYSU_GIS_YAO_x64/thirdlib/dlib/include/dlib/data_io.h"
+//using namespace dlib;
 
 
 
@@ -123,6 +123,12 @@ int getWifiTest()
 
 int main(int argc, char *argv[])
 {
+
+		int k = 5;
+		int w = (++k) + (++k) + (++k);
+		cout << w << endl;
+		return 0;
+
 	QCoreApplication a(argc, argv);
 
 	//支持中文步骤2
